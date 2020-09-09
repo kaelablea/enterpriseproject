@@ -1,0 +1,10 @@
+person\fx\ViewType.class
+person\fx\Main.class
+person\fx\ViewSwitcher.class
+person\Person.class
+person\PersonException.class
+person\list\PersonListController.class
+person\fx\PersonParameters.class
+person\fx\ViewSwitcher$1.class
+person\detail\PersonDetailController.class
+person\main\MainController.class

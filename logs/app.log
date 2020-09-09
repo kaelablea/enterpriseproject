@@ -1,0 +1,52 @@
+13:08:59.601 INFO  main.MainController :  heyLOGGED IN
+13:08:59.612 DEBUG person.Person : person constructed
+13:08:59.612 DEBUG person.Person : person constructed
+13:08:59.613 DEBUG person.Person : person constructed
+13:28:28.211 INFO  main.MainController :  heyLOGGED IN
+13:28:28.220 DEBUG person.Person : person constructed
+13:28:28.220 DEBUG person.Person : person constructed
+13:28:28.221 DEBUG person.Person : person constructed
+13:32:39.576 INFO  main.MainController :  heyLOGGED IN
+13:32:39.585 DEBUG person.Person : person constructed
+13:32:39.585 DEBUG person.Person : person constructed
+13:32:39.586 DEBUG person.Person : person constructed
+13:32:50.304 ERROR list.PersonListController : DELETING Nob Smith
+13:47:20.849 INFO  main.MainController :  heyLOGGED IN
+13:47:20.859 DEBUG person.Person : person constructed
+13:47:20.859 DEBUG person.Person : person constructed
+13:47:20.860 DEBUG person.Person : person constructed
+13:47:25.713 DEBUG person.Person : person constructed
+13:50:18.594 INFO  main.MainController :  heyLOGGED IN
+13:50:18.605 DEBUG person.Person : person constructed
+13:50:18.606 DEBUG person.Person : person constructed
+13:50:18.607 DEBUG person.Person : person constructed
+13:50:21.867 DEBUG person.Person : person constructed
+13:50:43.802 INFO  list.PersonListController : READING Nob Smith
+13:56:50.038 INFO  main.MainController :  heyLOGGED IN
+13:56:50.048 DEBUG person.Person : person constructed
+13:56:50.048 DEBUG person.Person : person constructed
+13:56:50.049 DEBUG person.Person : person constructed
+13:56:52.513 DEBUG person.Person : person constructed
+13:59:57.296 INFO  main.MainController :  heyLOGGED IN
+13:59:57.306 DEBUG person.Person : person constructed
+13:59:57.306 DEBUG person.Person : person constructed
+13:59:57.307 DEBUG person.Person : person constructed
+14:00:02.041 DEBUG person.Person : person constructed
+14:07:17.817 INFO  main.MainController :  heyLOGGED IN
+14:07:17.827 DEBUG person.Person : person constructed
+14:07:17.827 DEBUG person.Person : person constructed
+14:07:17.828 DEBUG person.Person : person constructed
+14:07:24.204 DEBUG person.Person : person constructed
+14:07:25.441 INFO  detail.PersonDetailController : CREATING  
+14:07:25.442 DEBUG person.Person : person constructed
+14:07:25.443 DEBUG person.Person : person constructed
+14:07:25.443 DEBUG person.Person : person constructed
+14:13:48.196 INFO  main.MainController :  LOGGED IN
+14:13:48.207 DEBUG person.Person : person constructed
+14:13:48.208 DEBUG person.Person : person constructed
+14:13:48.208 DEBUG person.Person : person constructed
+14:13:50.397 DEBUG person.Person : person constructed
+14:13:51.802 INFO  detail.PersonDetailController : CREATING  
+14:13:51.803 DEBUG person.Person : person constructed
+14:13:51.804 DEBUG person.Person : person constructed
+14:13:51.804 DEBUG person.Person : person constructed
