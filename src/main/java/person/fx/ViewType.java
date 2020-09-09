@@ -1,5 +1,5 @@
 package person.fx;
 
 public enum ViewType {
-    PersonListView, PersonDetailView
+    PersonListView, PersonDetailView, LoginView
 }

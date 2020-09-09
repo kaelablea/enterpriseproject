@@ -42,7 +42,7 @@ public class PersonDetailController implements Initializable {
     }
 
     @FXML
-    void savePerson(ActionEvent event) {
+    void handler(ActionEvent event) {
         if(person.getId() == 0) {
             Random random = new Random();
 

@@ -10,12 +10,11 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
-
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("mainView.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/mainview.fxml"));
         loader.setController(ViewSwitcher.getInstance());
         Parent rootNode = loader.load();
         Scene scene = new Scene(rootNode);

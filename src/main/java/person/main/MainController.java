@@ -1,13 +1,12 @@
 package person.main;
 
-import javafx.scene.control.TextField;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import person.Person;
+import javafx.scene.control.TextField;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import person.fx.ViewSwitcher;
 import person.fx.ViewType;
 
@@ -22,11 +21,10 @@ public class MainController implements Initializable{
     private TextField userName;
 
     public  MainController(){
-        Person person = null;
     }
 
     @FXML
-    void doSomething(ActionEvent event){
+    void handler(ActionEvent event){
         //login stuff here later
         logger.info(" " + userName.getText() + "LOGGED IN");
         ViewSwitcher.getInstance().switchView(ViewType.PersonListView);

@@ -37,7 +37,7 @@ public class PersonListController implements Initializable {
     }
 
     @FXML
-    void doSomething(ActionEvent event) {
+    void handler(ActionEvent event) {
         if (event.getSource() == addPerson) {
             if(personListView.getSelectionModel().getSelectedItem() != null){
                 Person person = personListView.getSelectionModel().getSelectedItem();

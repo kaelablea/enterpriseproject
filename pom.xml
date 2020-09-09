@@ -10,6 +10,7 @@
 <properties>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 </properties>
 
 <dependencies>
@@ -52,7 +53,7 @@
             <artifactId>javafx-maven-plugin</artifactId>
             <version>0.0.4</version>
             <configuration>
-                <mainClass>people.fx.Main</mainClass>
+                <mainClass>person.fx.Main</mainClass>
             </configuration>
         </plugin>
         <plugin>
@@ -84,7 +85,7 @@
                         <addClasspath>true</addClasspath>
                         <classpathPrefix>libs/</classpathPrefix>
                         <mainClass>
-                            main.Main
+                            person.fx.Main
                         </mainClass>
                     </manifest>
                 </archive>
