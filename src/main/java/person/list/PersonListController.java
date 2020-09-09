@@ -24,7 +24,7 @@ public class PersonListController implements Initializable {
     private Button addPerson, deletePerson;
 
     @FXML
-    private ListView<Person> personListView;
+    private ListView<Person> personList;
 
     private ObservableList<Person> people;
 
@@ -39,10 +39,10 @@ public class PersonListController implements Initializable {
     @FXML
     void handler(ActionEvent event) {
         if (event.getSource() == addPerson) {
-            if(personListView.getSelectionModel().getSelectedItem() != null){
-                Person person = personListView.getSelectionModel().getSelectedItem();
+            if(personList.getSelectionModel().getSelectedItem() != null){
+                Person person = personList.getSelectionModel().getSelectedItem();
                 PersonParameters.setPersonParm(person);
-                logger.error("READING " + person.getFirstName() + " " + person.getLastName());
+                logger.info("READING " + person.getFirstName() + " " + person.getLastName());
                 ViewSwitcher.getInstance().switchView(ViewType.PersonDetailView);
             }
             else {
@@ -50,16 +50,22 @@ public class PersonListController implements Initializable {
                 ViewSwitcher.getInstance().switchView(ViewType.PersonDetailView);
             }
         } else if (event.getSource() == deletePerson) {
-            int index = personListView.getSelectionModel().getSelectedIndex();
-            Person person = personListView.getSelectionModel().getSelectedItem();
-            logger.error("DELETING " + person.getFirstName() + " " + person.getLastName());
-            personListView.getItems().remove(index);
-            people.remove(person);
+            if(personList.getSelectionModel().isEmpty() == false) {
+                int index = personList.getSelectionModel().getSelectedIndex();
+                Person person = personList.getSelectionModel().getSelectedItem();
+                logger.info("DELETING " + person.getFirstName() + " " + person.getLastName());
+                personList.getItems().remove(index);
+                people.remove(person);
+            }
+            else{
+                logger.error("No Person Selected To Delete");
+            }
         }
     }
 
+    @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        personListView.setItems(people);
+        personList.setItems(people);
 
     }
 

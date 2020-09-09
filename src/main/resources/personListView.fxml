@@ -10,7 +10,7 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ListView prefHeight="298.0" prefWidth="600.0">
+            <ListView fx:id="personList" prefHeight="298.0" prefWidth="600.0">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
