@@ -10,7 +10,7 @@
   },
   "response": {
     "status": 200,
-    "body": "[{\"id\":1,\"personName\":\"Tim\"},{\"id\":2,\"personName\":\"Marco\"},{\"id\":3,\"personName\":\"Tam\"}]",
+    "body": "[{\"id\":1,\"firstName\":\"Tim\"},{\"id\":2,\"firstName\":\"Marco\"},{\"id\":3,\"firstName\":\"Tam\"}]",
     "headers": {
       "Content-Type": "application/json"
     }

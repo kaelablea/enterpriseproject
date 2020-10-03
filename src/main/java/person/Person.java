@@ -7,6 +7,7 @@ package person;
 import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 public class Person {
     private static final Logger logger = org.apache.logging.log4j.LogManager.getLogger();
@@ -20,12 +21,12 @@ public class Person {
     public Person() {
     }
 
-    public Person(int id, String firstName, String lastName, LocalDate dateOfBirth, int age) {
+    public Person(int id, String firstName, String lastName, LocalDate dateOfBirth) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.id = id;
-        this.age = age;
+        this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
 
         logger.debug("person constructed");
     }

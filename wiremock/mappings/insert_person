@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/people",
+    "headers" : {
+      "Authorization" : {
+        "contains" : "i am a session token"
+      }
+    },
+    "bodyPatterns" : [ {
+      "equalToJson" : "{\"firstName\":\"good\",\"lastName\":\"variables\",\"dateOfBirth\":\"1993-01-01\"}",
+      "ignoreArrayOrder" : true,
+      "ignoreExtraElements" : true
+    } ]
+  },
+  "response": {
+    "status": 200
+  }
+}

@@ -30,9 +30,9 @@ public class PersonListController implements Initializable {
 
     public PersonListController() {
         people = FXCollections.observableArrayList();
-        people.add(new Person(1237, "Nob", "Smith", LocalDate.of(1980, 1, 1),0));
-        people.add(new Person(1235, "Rob", "Smith", LocalDate.of(1980, 2, 2),0));
-        people.add(new Person(1236, "Tina", "Smith", LocalDate.of(1980, 3, 3),0));
+        people.add(new Person(1237, "Nob", "Smith", LocalDate.of(1980, 1, 1)));
+        people.add(new Person(1235, "Rob", "Smith", LocalDate.of(1980, 2, 2)));
+        people.add(new Person(1236, "Tina", "Smith", LocalDate.of(1980, 3, 3)));
 
     }
 
@@ -46,7 +46,7 @@ public class PersonListController implements Initializable {
                 ViewSwitcher.getInstance().switchView(ViewType.PersonDetailView);
             }
             else {
-                PersonParameters.setPersonParm(new Person(0,"","",null,0));
+                PersonParameters.setPersonParm(new Person(0,"","",null));
                 ViewSwitcher.getInstance().switchView(ViewType.PersonDetailView);
             }
         } else if (event.getSource() == deletePerson) {
