@@ -58,7 +58,7 @@
             <artifactId>javafx-maven-plugin</artifactId>
             <version>0.0.4</version>
             <configuration>
-                <mainClass>person.fx.Main</mainClass>
+                <mainClass>person.main.Main</mainClass>
             </configuration>
         </plugin>
         <plugin>
@@ -90,7 +90,7 @@
                         <addClasspath>true</addClasspath>
                         <classpathPrefix>libs/</classpathPrefix>
                         <mainClass>
-                            person.fx.Main
+                            person.main.Main
                         </mainClass>
                     </manifest>
                 </archive>

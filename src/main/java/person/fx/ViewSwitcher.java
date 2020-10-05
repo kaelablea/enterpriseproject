@@ -7,7 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 import person.detail.PersonDetailController;
 import person.list.PersonListController;
-import person.main.MainController;
+import person.login.LoginController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,11 +36,11 @@ public class ViewSwitcher implements Initializable {
             switch(viewType) {
                 case LoginView:
                     loader = new FXMLLoader(ViewSwitcher.class.getResource("/loginView.fxml"));
-                    loader.setController(new MainController());
+                    loader.setController(new LoginController());
                     break;
                 case PersonDetailView:
                     loader = new FXMLLoader(ViewSwitcher.class.getResource("/personDetailView.fxml"));
-                    loader.setController(new PersonDetailController(PersonParameters.getPersonParm()));
+                    loader.setController(new PersonDetailController(PersonParameters.getPersonParm(), SessionParameters.getSessionToken()));
                     break;
 
                 case PersonListView:

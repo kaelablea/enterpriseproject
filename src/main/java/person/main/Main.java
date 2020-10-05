@@ -1,10 +1,11 @@
-package person.fx;
+package person.main;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import person.fx.ViewSwitcher;
 
 public class Main extends Application {
 

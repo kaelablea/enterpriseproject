@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 
 public class PersonDetailController implements Initializable {
     private static Logger logger = LogManager.getLogger();
+    private final String sessionToken;
 
     @FXML
     private TextField personID;
@@ -39,9 +40,11 @@ public class PersonDetailController implements Initializable {
     // this is our model
     private Person person;
 
-    public PersonDetailController(Person person) {
+    public PersonDetailController(Person person, String sessionToken) {
         this.person = person;
+        this.sessionToken = sessionToken;
     }
+
 
     @FXML
     void handler(ActionEvent event) {
@@ -60,6 +63,7 @@ public class PersonDetailController implements Initializable {
             person.setAge(2020-person.getDateOfBirth().getYear());
              */
             logger.info("CREATING " + person.getFirstName() + " " + person.getLastName());
+
         }
         else{
 
