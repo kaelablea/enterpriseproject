@@ -11,17 +11,22 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import person.Person;
 import person.fx.PersonParameters;
+import person.fx.SessionParameters;
 import person.fx.ViewSwitcher;
 import person.fx.ViewType;
+import person.gateway.PersonGateway;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class PersonListController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
+    PersonGateway personGateway;
     @FXML
-    private Button addPerson, deletePerson;
+    private Button addPerson, deletePerson, updatePerson;
 
     @FXML
     private ListView<Person> personList;
@@ -29,26 +34,13 @@ public class PersonListController implements Initializable {
     private ObservableList<Person> people;
 
     public PersonListController() {
-        people = FXCollections.observableArrayList();
-        people.add(new Person(1237, "Nob", "Smith", LocalDate.of(1980, 1, 1)));
-        people.add(new Person(1235, "Rob", "Smith", LocalDate.of(1980, 2, 2)));
-        people.add(new Person(1236, "Tina", "Smith", LocalDate.of(1980, 3, 3)));
-
     }
 
     @FXML
     void handler(ActionEvent event) {
         if (event.getSource() == addPerson) {
-            if(personList.getSelectionModel().getSelectedItem() != null){
-                Person person = personList.getSelectionModel().getSelectedItem();
-                PersonParameters.setPersonParm(person);
-                logger.info("READING " + person.getFirstName() + " " + person.getLastName());
-                ViewSwitcher.getInstance().switchView(ViewType.PersonDetailView);
-            }
-            else {
-                PersonParameters.setPersonParm(new Person(0,"","",null));
-                ViewSwitcher.getInstance().switchView(ViewType.PersonDetailView);
-            }
+            PersonParameters.setPersonParm(new Person(0,"","",LocalDate.now()));
+            ViewSwitcher.getInstance().switchView(ViewType.PersonDetailView);
         } else if (event.getSource() == deletePerson) {
             if(personList.getSelectionModel().isEmpty() == false) {
                 int index = personList.getSelectionModel().getSelectedIndex();
@@ -56,15 +48,37 @@ public class PersonListController implements Initializable {
                 logger.info("DELETING " + person.getFirstName() + " " + person.getLastName());
                 personList.getItems().remove(index);
                 people.remove(person);
+                personGateway.deletePerson(person.getId());
             }
             else{
                 logger.error("No Person Selected To Delete");
             }
+        } else if (event.getSource() == updatePerson){
+            if(personList.getSelectionModel().getSelectedItem() != null){
+                Person person = personList.getSelectionModel().getSelectedItem();
+                PersonParameters.setPersonParm(person);
+                logger.info("READING " + person.getFirstName() + " " + person.getLastName());
+                ViewSwitcher.getInstance().switchView(ViewType.PersonDetailView);
+
+            }
+            else{
+                logger.error("No Person Selected To Update");
+            }
         }
+
     }
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        people = FXCollections.observableArrayList();
+        //Should I put PersonGateway in personParam?
+        //Would be cleaner(?) and still could make more than one if necessary
+        personGateway = new PersonGateway("http://localhost:8080", SessionParameters.getSessionToken());
+        ArrayList<Person> listOfPeople = personGateway.getPeople();
+        logger.info("Retrieved list of people.");
+        for(Person i :  listOfPeople){
+            people.add(i);
+        }
         personList.setItems(people);
 
     }

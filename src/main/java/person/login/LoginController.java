@@ -38,12 +38,16 @@ public class LoginController implements Initializable{
     @FXML
     void handler(ActionEvent event){
         try {
+            //authenticate
             String sessionToken = SessionGateway.authenticate(userName.getText(), password.getText());
+
+            //set session token
             SessionParameters.setSessionToken(sessionToken);
-            PersonGateway personList = new PersonGateway("http://localhost:8080/people", sessionToken);
-            List<Person> people = personList.getPeople();
-            logger.info(" " + userName.getText() + "LOGGED IN");
+            logger.info(" " + userName.getText() + " LOGGED IN");
+
+            //switch to list of people
             ViewSwitcher.getInstance().switchView(ViewType.PersonListView);
+
         } catch (RuntimeException | IOException e){
             Alert badLogin = new Alert(Alert.AlertType.ERROR, "Invalid Login! Try again.");
             badLogin.showAndWait();

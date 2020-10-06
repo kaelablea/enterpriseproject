@@ -47,7 +47,7 @@ public class SessionGateway {
 
             // a special response for invalid credentials
             if (response.getStatusLine().getStatusCode() == 401) {
-                logger.error("Invalid login");
+                logger.error("Invalid login.json");
                 httpclient.close();
                 throw new IOException();
             }
@@ -56,7 +56,7 @@ public class SessionGateway {
                 httpclient.close();
                 throw new IOException();
             }
-            logger.info("Valid login.");
+            logger.info("Valid login.json.");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (ClientProtocolException e) {

@@ -3,7 +3,6 @@ person\login\LoginController.class
 person\fx\ViewType.class
 person\fx\ViewSwitcher.class
 person\Person.class
-person\login\Login.class
 person\gateway\PersonGateway.class
 person\PersonException.class
 person\main\Main.class
