@@ -6,6 +6,7 @@ public class SessionParameters {
     public static String getSessionToken(){return sessionToken;}
 
     public static void setSessionToken(String sessionId){
+
         SessionParameters.sessionToken = sessionId;
     }
 }

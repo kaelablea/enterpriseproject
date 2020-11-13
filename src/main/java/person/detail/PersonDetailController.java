@@ -11,12 +11,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import person.Person;
 import person.PersonException;
+import person.db.DBConnect;
 import person.fx.SessionParameters;
 import person.fx.ViewSwitcher;
 import person.fx.ViewType;
 import person.gateway.PersonGateway;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,6 +32,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class PersonDetailController implements Initializable {
     private static Logger logger = LogManager.getLogger();
     private final String sessionToken;
+    private Connection connection;
 
 
     @FXML
@@ -54,6 +61,29 @@ public class PersonDetailController implements Initializable {
     public PersonDetailController(Person person, String sessionToken) {
         this.person = person;
         this.sessionToken = sessionToken;
+    }
+    @PostConstruct
+    public void startup() {
+        try {
+            connection = DBConnect.connectToDB();
+            logger.info("*** MySQL connection created");
+        } catch (SQLException | IOException e) {
+            logger.error("*** " + e);
+
+            // TODO: find a better way to force shutdown on connect failure
+            // System.exit(0);
+        }
+
+    }
+
+    @PreDestroy
+    public void cleanup() {
+        try {
+            connection.close();
+            logger.info("*** MySQL connection closed");
+        } catch (SQLException e) {
+            logger.error("*** " + e);
+        }
     }
 
 
@@ -142,7 +172,7 @@ public class PersonDetailController implements Initializable {
             person.setFirstName(firstName.getText());
             person.setLastName(lastName.getText());
             person.setDateOfBirth(dob.getValue());
-            personGateway.updatePerson(changedValues, person.getId());
+            personGateway.updatePerson(changedValues, person, person.getId() );
             logger.info("UPDATING " + person.getFirstName() + " " + person.getLastName());
         }
         ViewSwitcher.getInstance().switchView(ViewType.PersonListView);
@@ -153,7 +183,7 @@ public class PersonDetailController implements Initializable {
         firstName.setText(person.getFirstName());
         lastName.setText(person.getLastName());
         dob.setValue(person.getDateOfBirth());
-        personGateway = new PersonGateway("http://localhost:8080",SessionParameters.getSessionToken());
+
     }
 
 }

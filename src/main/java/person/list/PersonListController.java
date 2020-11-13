@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.web.bind.annotation.RestController;
 import person.Person;
 import person.fx.PersonParameters;
 import person.fx.SessionParameters;
@@ -17,14 +18,18 @@ import person.fx.ViewType;
 import person.gateway.PersonGateway;
 
 import java.net.URL;
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+@RestController
 public class PersonListController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
     PersonGateway personGateway;
+    private Connection connection;
+
     @FXML
     private Button addPerson, deletePerson, updatePerson;
 
@@ -73,7 +78,7 @@ public class PersonListController implements Initializable {
         people = FXCollections.observableArrayList();
         //Should I put PersonGateway in personParam?
         //Would be cleaner(?) and still could make more than one if necessary
-        personGateway = new PersonGateway("http://localhost:8080", SessionParameters.getSessionToken());
+        personGateway = new PersonGateway("http://localhost:8080", SessionParameters.getSessionToken(), connection);
         ArrayList<Person> listOfPeople = personGateway.getPeople();
         logger.info("Retrieved list of people.");
         for(Person i :  listOfPeople){

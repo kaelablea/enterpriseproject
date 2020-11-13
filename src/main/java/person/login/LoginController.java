@@ -9,6 +9,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.web.bind.annotation.RestController;
 import person.Person;
 import person.fx.SessionParameters;
 import person.fx.ViewSwitcher;
@@ -21,6 +22,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+@RestController
 public class LoginController implements Initializable{
     private static final Logger logger = LogManager.getLogger();
     @FXML
@@ -39,7 +41,8 @@ public class LoginController implements Initializable{
     void handler(ActionEvent event){
         try {
             //authenticate
-            String sessionToken = SessionGateway.authenticate(userName.getText(), password.getText());
+            String authenticate = SessionGateway.authenticate(userName.getText(), password.getText());
+            String sessionToken = SessionGateway.createSessionToken(userName.getText());
 
             //set session token
             SessionParameters.setSessionToken(sessionToken);

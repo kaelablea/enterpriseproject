@@ -5,24 +5,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
 import person.fx.ViewSwitcher;
 
-public class Main extends Application {
+@SpringBootApplication
+@ComponentScan({"login", "detail", "list"})
+public class Main{
 
     public static void main(String[] args) {
-        launch(args);
+        SpringApplication.run(person.main.Application.class, args);
     }
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/mainview.fxml"));
-        loader.setController(ViewSwitcher.getInstance());
-        Parent rootNode = loader.load();
-        Scene scene = new Scene(rootNode);
-        stage.setScene(scene);
-        stage.setTitle("Main Login view");
-        stage.show();
-
-    }
 
 }
