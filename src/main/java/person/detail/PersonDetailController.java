@@ -9,12 +9,18 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 import person.Person;
 import person.PersonException;
 import person.db.DBConnect;
 import person.fx.SessionParameters;
 import person.fx.ViewSwitcher;
 import person.fx.ViewType;
+import person.gateway.PersonController;
 import person.gateway.PersonGateway;
 
 import javax.annotation.PostConstruct;
@@ -24,16 +30,12 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PersonDetailController implements Initializable {
     private static Logger logger = LogManager.getLogger();
-    private final String sessionToken;
-    private Connection connection;
-
+    RestTemplate restTemplate= new RestTemplate();
 
     @FXML
     private TextField personID;
@@ -56,35 +58,12 @@ public class PersonDetailController implements Initializable {
     // this is our model
     private Person person;
 
-    PersonGateway personGateway;
+    PersonController personController;
 
-    public PersonDetailController(Person person, String sessionToken) {
+    public PersonDetailController(Person person) {
         this.person = person;
-        this.sessionToken = sessionToken;
-    }
-    @PostConstruct
-    public void startup() {
-        try {
-            connection = DBConnect.connectToDB();
-            logger.info("*** MySQL connection created");
-        } catch (SQLException | IOException e) {
-            logger.error("*** " + e);
-
-            // TODO: find a better way to force shutdown on connect failure
-            // System.exit(0);
-        }
-
     }
 
-    @PreDestroy
-    public void cleanup() {
-        try {
-            connection.close();
-            logger.info("*** MySQL connection closed");
-        } catch (SQLException e) {
-            logger.error("*** " + e);
-        }
-    }
 
 
     @FXML
@@ -120,44 +99,46 @@ public class PersonDetailController implements Initializable {
                 alert.showAndWait();
                 throw new PersonException("Bad date.");
             }
-            person.setId(personGateway.insertPerson(person));
+            HttpHeaders  headers = new HttpHeaders();
+            headers.set("Authorization", SessionParameters.getSessionToken());
+            HttpEntity<Person> request = new HttpEntity<>(person,headers);
+
+            ResponseEntity<Integer> response = restTemplate.exchange("http://localhost:8080/people", HttpMethod.POST,request, Integer.class);
+
+            person.setId(response.getBody());
 
             logger.info("CREATING " + person.getFirstName() + " " + person.getLastName());
 
         }
         else{
-            ArrayList<String> changedValues = new ArrayList<String>();
+            Map<String,String> changedValues = new HashMap<String,String>();
 
             //not sure is setting index to null is necessary
-            if(firstName.getText() != person.getFirstName()){
+            if(!firstName.getText().equals(person.getFirstName())){
                 if(lastName.getText().isEmpty() || lastName.getText().length() > 100){
                     Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid Last Name, try again!");
                     alert.showAndWait();
                     throw new PersonException("Bad name.");
                 }
                 else {
-                    changedValues.add(0, firstName.getText());
+                    changedValues.put("firstName", firstName.getText());
                 }
             }
-            else{
-                changedValues.add(0, null);
-            }
-            if(lastName.getText() != person.getLastName()){
+
+            if(!lastName.getText().equals(person.getLastName())){
                 if(lastName.getText().isEmpty() || lastName.getText().length() > 100){
                     Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid Last Name, try again!");
                     alert.showAndWait();
                     throw new PersonException("Bad name.");
                 }
                 else {
-                    changedValues.add(1, lastName.getText());
+                    changedValues.put("lastName", lastName.getText());
                 }
             }
-            else{
-                changedValues.add(1, null);
-            }
-            if(dob.getValue() != person.getDateOfBirth()){
+
+            if(!dob.getValue().equals(person.getDateOfBirth())){
                 if(dob.getValue().compareTo(LocalDate.now()) <= 0) {
-                    changedValues.add(2, dob.getValue().toString());
+                    changedValues.put("dateOfBirth", dob.getValue().toString());
                 }
                 else{
                     Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid date, try again!");
@@ -165,16 +146,20 @@ public class PersonDetailController implements Initializable {
                     throw new PersonException("Bad date.");
                 }
             }
-            else{
-                changedValues.add(2, null);
-            }
-
+            //WOOOOOOOOOOOOOOOOOOOOOOORK
+            logger.info(changedValues.toString());
+            String uri = "http://localhost:8080/people/" + person.getId();
             person.setFirstName(firstName.getText());
             person.setLastName(lastName.getText());
             person.setDateOfBirth(dob.getValue());
-            personGateway.updatePerson(changedValues, person, person.getId() );
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", SessionParameters.getSessionToken());
+            HttpEntity<Map<String,String>> request = new HttpEntity(changedValues,headers);
+            logger.info(request.toString());
+            restTemplate.exchange(uri, HttpMethod.PUT, request, Person.class);
             logger.info("UPDATING " + person.getFirstName() + " " + person.getLastName());
         }
+
         ViewSwitcher.getInstance().switchView(ViewType.PersonListView);
     }
 

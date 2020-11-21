@@ -40,7 +40,7 @@ public class ViewSwitcher implements Initializable {
                     break;
                 case PersonDetailView:
                     loader = new FXMLLoader(ViewSwitcher.class.getResource("/personDetailView.fxml"));
-                    loader.setController(new PersonDetailController(PersonParameters.getPersonParm(), SessionParameters.getSessionToken()));
+                    loader.setController(new PersonDetailController(PersonParameters.getPersonParm()));
                     break;
 
                 case PersonListView:

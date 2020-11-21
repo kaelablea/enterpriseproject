@@ -1,7 +1,7 @@
 package person.db;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
-import person.main.Main;
+import person.main.App;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class DBConnect {
     private static Properties getConfig(String propsFileName) throws IOException {
         Properties props = new Properties();
 
-        BufferedInputStream propsFile = (BufferedInputStream) Main.class.getResourceAsStream(propsFileName);
+        BufferedInputStream propsFile = (BufferedInputStream) App.class.getResourceAsStream(propsFileName);
         props.load(propsFile);
         propsFile.close();
 

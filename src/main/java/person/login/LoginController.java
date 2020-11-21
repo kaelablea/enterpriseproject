@@ -9,22 +9,24 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import person.Person;
+import org.springframework.web.client.RestTemplate;
+import person.User;
 import person.fx.SessionParameters;
 import person.fx.ViewSwitcher;
 import person.fx.ViewType;
-import person.gateway.PersonGateway;
 import person.gateway.SessionGateway;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
-@RestController
+
 public class LoginController implements Initializable{
     private static final Logger logger = LogManager.getLogger();
+    RestTemplate restTemplate = new RestTemplate();
     @FXML
     private Button login;
     @FXML
@@ -41,17 +43,15 @@ public class LoginController implements Initializable{
     void handler(ActionEvent event){
         try {
             //authenticate
-            String authenticate = SessionGateway.authenticate(userName.getText(), password.getText());
-            String sessionToken = SessionGateway.createSessionToken(userName.getText());
+            User user = new User(userName.getText(), password.getText());
+            ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:8080/login", user, String.class);
 
-            //set session token
-            SessionParameters.setSessionToken(sessionToken);
             logger.info(" " + userName.getText() + " LOGGED IN");
 
             //switch to list of people
             ViewSwitcher.getInstance().switchView(ViewType.PersonListView);
 
-        } catch (RuntimeException | IOException e){
+        } catch (RuntimeException e){
             Alert badLogin = new Alert(Alert.AlertType.ERROR, "Invalid Login! Try again.");
             badLogin.showAndWait();
             e.printStackTrace();

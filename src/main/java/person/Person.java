@@ -18,7 +18,7 @@ public class Person {
     private int id;
     private int age;
 
-    public Person() {
+    public Person(){
     }
 
     public Person(int id, String firstName, String lastName, LocalDate dateOfBirth) {
@@ -29,6 +29,16 @@ public class Person {
         this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
 
         logger.debug("person constructed");
+    }
+
+    @Override
+    public String toString(){
+        return "Person{" +
+                "id=" + id +
+                ", firstName='" +firstName + "'" +
+                ", lastName='" + lastName + "'" +
+                ", dateOfBirth='" +dateOfBirth.toString() + "'" +
+                "}";
     }
 
     // throw an exception if anything bad happens during save process
@@ -51,9 +61,6 @@ public class Person {
     }
 
     // accessors
-
-    public String toString(){return firstName + " " + lastName;}
-
     public static Logger getLogger() {
         return logger;
     }
