@@ -19,6 +19,7 @@ import person.People;
 import person.Person;
 import person.PersonException;
 import person.db.DBConnect;
+import person.db.DBException;
 import person.fx.SessionParameters;
 
 import javax.annotation.PostConstruct;
@@ -75,9 +76,6 @@ public class PersonController {
             valid = new PersonGateway(connection).validateSessionToken(token);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }
-
-        if(valid != 200) {
             return new ResponseEntity<People>(HttpStatus.valueOf(401));
         }
 
@@ -89,38 +87,50 @@ public class PersonController {
     }
 
     @PostMapping("/people")
-    public ResponseEntity<Integer> insertPerson(@RequestHeader("Authorization") String token,@RequestBody Person newPerson){
+    public ResponseEntity<String> insertPerson(@RequestHeader("Authorization") String token,@RequestBody Person newPerson){
         int valid = 0;
         try {
             valid =  new PersonGateway(connection).validateSessionToken(token);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            return new ResponseEntity<String>("", HttpStatus.valueOf(401));
         }
-
-        Person person = PersonGateway.insertPerson(newPerson);
-        if(person.getId() <= 0) {
+        logger.info(newPerson.toString());
+        try {
+            PersonGateway.insertPerson(newPerson);
+            ResponseEntity<String> response = new ResponseEntity("", HttpStatus.valueOf(200));
+            return response;
+        } catch (Exception e) {
+            e.printStackTrace();
             logger.error("could not insert new person");
-            ResponseEntity<String> response = new ResponseEntity<String>("", HttpStatus.valueOf(401));
+            ResponseEntity<String> response = new ResponseEntity<String>("Could not insert person", HttpStatus.valueOf(400));
+            return  response;
         }
 
-        ResponseEntity<Integer> response = new ResponseEntity(person.getId(), HttpStatus.valueOf(200));
-        return response;
+
     }
 
     @PutMapping("/people/{id}")
-    public static ResponseEntity<String> updatePerson(@RequestHeader(value = "Authorization") String token, Map<String,String> updateValues, @PathVariable("id") int id) {
+    public static ResponseEntity<String> updatePerson(@RequestHeader(value = "Authorization") String token, @RequestBody Map<String,String> updateValues, @PathVariable("id") int id) {
         int valid = 0;
         try {
             valid =  new PersonGateway(connection).validateSessionToken(token);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            return new ResponseEntity<String>("", HttpStatus.valueOf(401));
         }
-
-        PersonGateway.updatePerson(updateValues, id);
-
-        ResponseEntity<String> response = new ResponseEntity<String>("", HttpStatus.valueOf(200));
-
-        return response;
+        logger.info(updateValues.toString());
+        try {
+            PersonGateway.updatePerson(updateValues, id);
+            ResponseEntity<String> response = new ResponseEntity<String>("", HttpStatus.valueOf(200));
+            return response;
+        } catch(DBException db){
+            db.printStackTrace();
+            return new ResponseEntity<String>("",HttpStatus.valueOf(404));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>("Error with update request", HttpStatus.valueOf(400));
+        }
     }
 
     @DeleteMapping("/people/{id}")
@@ -130,59 +140,35 @@ public class PersonController {
             valid=  new PersonGateway(connection).validateSessionToken(token);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            return new ResponseEntity<String>("",HttpStatus.valueOf(401));
         }
 
-        PersonGateway.deletePerson(id);
-
-        ResponseEntity<String> response = new ResponseEntity<String>("id",HttpStatus.valueOf(200));
-        return response;
-    }
-
-
-    private static String waitForResponseAsString(HttpRequestBase request) throws IOException {
-        CloseableHttpClient httpclient = null;
-        CloseableHttpResponse response = null;
-
         try {
-
-            httpclient = HttpClients.createDefault();
-            logger.info(request.toString());
-            response = httpclient.execute(request);
-
-            switch(response.getStatusLine().getStatusCode()) {
-                case 200:
-                    // success
-                    break;
-                case 401:
-                    // bad session token
-                    throw new PersonException("401");
-                default:
-                    // something weird happened
-                    throw new PersonException("Non-200 status code returned: " + response.getStatusLine());
-            }
-
-            return parseResponseToString(response);
-
-        } catch(Exception e) {
-            e.printStackTrace();
-            logger.error(e.getMessage());
-            throw new PersonException(e);
-        } finally {
-            if(response != null)
-                response.close();
-            if(httpclient != null)
-                httpclient.close();
+            PersonGateway.deletePerson(id);
+            ResponseEntity<String> response = new ResponseEntity<String>("id", HttpStatus.valueOf(200));
+            return response;
+        } catch (DBException db){
+            db.printStackTrace();
+            return new ResponseEntity<String>("",HttpStatus.valueOf(404));
         }
     }
 
-    private static String parseResponseToString(CloseableHttpResponse response) {
-        HttpEntity entity = response.getEntity();
-        // use org.apache.http.util.EntityUtils to read json as string
+    @GetMapping("/people/{id}")
+    public static ResponseEntity<Person> fetchPerson(@RequestHeader("Authorization") String token, @PathVariable int id){
+        int valid = 0;
         try {
-            return EntityUtils.toString(entity, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
+            valid=  new PersonGateway(connection).validateSessionToken(token);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return new ResponseEntity("",HttpStatus.valueOf(401));
         }
-        return null;
+
+        try{
+            Person person = PersonGateway.getPerson(id);
+            return new ResponseEntity<Person>(person, HttpStatus.valueOf(200));
+        } catch (DBException db) {
+            db.printStackTrace();
+            return new ResponseEntity("", HttpStatus.valueOf(404));
+        }
     }
 }

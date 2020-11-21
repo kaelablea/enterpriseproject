@@ -37,8 +37,6 @@ public class PersonListController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
     RestTemplate restTemplate= new RestTemplate();
 
-
-
     @FXML
     private Button addPerson, deletePerson, updatePerson;
 
@@ -57,9 +55,9 @@ public class PersonListController implements Initializable {
                 int index = personList.getSelectionModel().getSelectedIndex();
                 Person person = personList.getSelectionModel().getSelectedItem();
                 logger.info("DELETING " + person.getFirstName() + " " + person.getLastName());
-                personList.getItems().remove(index);
                 people.remove(person);
-                String uri = "/people/" + person.getId();
+                personList.getItems().remove(index);
+                String uri = "http://localhost:8080/people/" + person.getId();
                 HttpHeaders header = new HttpHeaders();
                 header.set("Authorization",SessionParameters.getSessionToken());
                 HttpEntity auth = new HttpEntity(header);

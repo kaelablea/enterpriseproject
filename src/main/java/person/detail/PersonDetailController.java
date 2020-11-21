@@ -23,9 +23,7 @@ import person.fx.ViewType;
 import person.gateway.PersonController;
 import person.gateway.PersonGateway;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import java.io.IOException;
+
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -99,13 +97,12 @@ public class PersonDetailController implements Initializable {
                 alert.showAndWait();
                 throw new PersonException("Bad date.");
             }
+            /*This is the add request*/
             HttpHeaders  headers = new HttpHeaders();
             headers.set("Authorization", SessionParameters.getSessionToken());
             HttpEntity<Person> request = new HttpEntity<>(person,headers);
 
             ResponseEntity<Integer> response = restTemplate.exchange("http://localhost:8080/people", HttpMethod.POST,request, Integer.class);
-
-            person.setId(response.getBody());
 
             logger.info("CREATING " + person.getFirstName() + " " + person.getLastName());
 
@@ -113,7 +110,6 @@ public class PersonDetailController implements Initializable {
         else{
             Map<String,String> changedValues = new HashMap<String,String>();
 
-            //not sure is setting index to null is necessary
             if(!firstName.getText().equals(person.getFirstName())){
                 if(lastName.getText().isEmpty() || lastName.getText().length() > 100){
                     Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid Last Name, try again!");
@@ -146,17 +142,19 @@ public class PersonDetailController implements Initializable {
                     throw new PersonException("Bad date.");
                 }
             }
-            //WOOOOOOOOOOOOOOOOOOOOOOORK
-            logger.info(changedValues.toString());
+
+            /* This is the update call*/
+            logger.info(SessionParameters.getSessionToken());
             String uri = "http://localhost:8080/people/" + person.getId();
             person.setFirstName(firstName.getText());
             person.setLastName(lastName.getText());
             person.setDateOfBirth(dob.getValue());
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", SessionParameters.getSessionToken());
+            logger.info(headers.toString());
             HttpEntity<Map<String,String>> request = new HttpEntity(changedValues,headers);
             logger.info(request.toString());
-            restTemplate.exchange(uri, HttpMethod.PUT, request, Person.class);
+            restTemplate.exchange(uri, HttpMethod.PUT, request, Person.class, person.getId());
             logger.info("UPDATING " + person.getFirstName() + " " + person.getLastName());
         }
 

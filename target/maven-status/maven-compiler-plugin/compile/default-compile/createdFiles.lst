@@ -13,6 +13,7 @@ person\fx\ViewType.class
 person\fx\ViewSwitcher.class
 person\People.class
 person\list\PersonListController$1.class
+person\db\DBException.class
 person\gateway\PersonGateway.class
 person\list\PersonListController$1$1.class
 person\main\App.class

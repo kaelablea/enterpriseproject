@@ -45,7 +45,7 @@ public class LoginController implements Initializable{
             //authenticate
             User user = new User(userName.getText(), password.getText());
             ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:8080/login", user, String.class);
-
+            SessionParameters.setSessionToken(response.getBody());
             logger.info(" " + userName.getText() + " LOGGED IN");
 
             //switch to list of people

@@ -47,6 +47,26 @@ public class PersonGateway {
         this.connection = connection;
     }
 
+    public static Person getPerson(int id) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        Person person= new Person();
+        try{
+            st = connection.prepareStatement("SELECT * FROM `Person` WHERE `id`=?");
+            st.setInt(1, id);
+            rs = st.executeQuery();
+            person.setId(id);
+            person.setFirstName(rs.getString("first_name"));
+            person.setLastName(rs.getString("last_name"));
+            person.setDateOfBirth(rs.getDate("dob").toLocalDate());
+            st.close();
+            return person;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return null;
+        }
+    }
+
     public People fetchPeople(){
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -81,11 +101,11 @@ public class PersonGateway {
     }
 
 
-    public static Person insertPerson(Person newPerson){
+    public static void insertPerson(Person newPerson){
 
         PreparedStatement st = null;
         ResultSet rs = null;
-
+        logger.info(newPerson.toString());
         try {
             st = connection.prepareStatement("INSERT INTO `Person`(`first_name`, `last_name`,  `dob`) VALUES (?,?,?)");
             st.setString(1,newPerson.getFirstName());
@@ -95,23 +115,13 @@ public class PersonGateway {
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
             st.setDate(3, sqlDate);
             st.executeUpdate();
-
-            st = connection.prepareStatement("SELECT `id` FROM `Person` WHERE first_name=? AND last_name =? and dob=?");
-            st.setString(1,newPerson.getFirstName());
-            st.setString(2, newPerson.getLastName());
-            st.setDate(3, sqlDate);
-            rs = st.executeQuery();
-            rs.first();
             st.close();
-            int id = rs.getInt("id");
-            newPerson.setId(id);
-            return newPerson;
 
         } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
         }
 
-        return null;
+        return;
     }
 
 
