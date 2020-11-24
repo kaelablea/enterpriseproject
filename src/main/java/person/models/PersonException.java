@@ -1,4 +1,4 @@
-package person;
+package person.models;
 
 //Should probably make some nice exceptions......
 public class PersonException extends RuntimeException {

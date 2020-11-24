@@ -1,4 +1,4 @@
-package person.db;
+package person.backend.repocontrollers;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import person.main.App;

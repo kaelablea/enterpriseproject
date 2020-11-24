@@ -1,4 +1,4 @@
-package person;
+package person.models;
 
 /**
  * Created by Mikaela on 9/8/2020.

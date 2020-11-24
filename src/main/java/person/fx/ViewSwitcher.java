@@ -5,9 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
-import person.detail.PersonDetailController;
-import person.list.PersonListController;
-import person.login.LoginController;
+import person.fx.fxcontrollers.PersonDetailController;
+import person.fx.fxcontrollers.PersonListController;
+import person.fx.fxcontrollers.LoginController;
 
 import java.io.IOException;
 import java.net.URL;

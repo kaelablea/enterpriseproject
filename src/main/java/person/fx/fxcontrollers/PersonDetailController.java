@@ -1,39 +1,33 @@
-package person.detail;
+package person.fx.fxcontrollers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
-import person.Person;
-import person.PersonException;
-import person.db.DBConnect;
 import person.fx.SessionParameters;
 import person.fx.ViewSwitcher;
 import person.fx.ViewType;
-import person.gateway.PersonController;
 import person.gateway.PersonGateway;
-
+import person.models.Audit;
+import person.models.AuditTrail;
+import person.models.Person;
+import person.models.PersonException;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 public class PersonDetailController implements Initializable {
     private static Logger logger = LogManager.getLogger();
-    RestTemplate restTemplate= new RestTemplate();
+    //private final String sessionToken;
+
 
     @FXML
     private TextField personID;
@@ -53,15 +47,18 @@ public class PersonDetailController implements Initializable {
     @FXML
     private Button addButton;
 
+    @FXML
+    private TableView auditTable;
+
     // this is our model
     private Person person;
 
-    PersonController personController;
+    PersonGateway personGateway;
 
     public PersonDetailController(Person person) {
         this.person = person;
+       //this.sessionToken = sessionToken;
     }
-
 
 
     @FXML
@@ -97,12 +94,7 @@ public class PersonDetailController implements Initializable {
                 alert.showAndWait();
                 throw new PersonException("Bad date.");
             }
-            /*This is the add request*/
-            HttpHeaders  headers = new HttpHeaders();
-            headers.set("Authorization", SessionParameters.getSessionToken());
-            HttpEntity<Person> request = new HttpEntity<>(person,headers);
-
-            ResponseEntity<Integer> response = restTemplate.exchange("http://localhost:8080/people", HttpMethod.POST,request, Integer.class);
+            person.setId(personGateway.insertPerson(person));
 
             logger.info("CREATING " + person.getFirstName() + " " + person.getLastName());
 
@@ -110,6 +102,7 @@ public class PersonDetailController implements Initializable {
         else{
             Map<String,String> changedValues = new HashMap<String,String>();
 
+            //not sure is setting index to null is necessary
             if(!firstName.getText().equals(person.getFirstName())){
                 if(lastName.getText().isEmpty() || lastName.getText().length() > 100){
                     Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid Last Name, try again!");
@@ -143,21 +136,13 @@ public class PersonDetailController implements Initializable {
                 }
             }
 
-            /* This is the update call*/
-            logger.info(SessionParameters.getSessionToken());
-            String uri = "http://localhost:8080/people/" + person.getId();
+
             person.setFirstName(firstName.getText());
             person.setLastName(lastName.getText());
             person.setDateOfBirth(dob.getValue());
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", SessionParameters.getSessionToken());
-            logger.info(headers.toString());
-            HttpEntity<Map<String,String>> request = new HttpEntity(changedValues,headers);
-            logger.info(request.toString());
-            restTemplate.exchange(uri, HttpMethod.PUT, request, Person.class, person.getId());
+            personGateway.updatePerson(changedValues, person.getId());
             logger.info("UPDATING " + person.getFirstName() + " " + person.getLastName());
         }
-
         ViewSwitcher.getInstance().switchView(ViewType.PersonListView);
     }
 
@@ -166,6 +151,27 @@ public class PersonDetailController implements Initializable {
         firstName.setText(person.getFirstName());
         lastName.setText(person.getLastName());
         dob.setValue(person.getDateOfBirth());
+        personGateway = new PersonGateway("http://localhost:8080",SessionParameters.getSessionToken());
+        TableColumn<Audit, String> chngMsg = new TableColumn<>("Change");
+        TableColumn<Audit, String> chngBy= new TableColumn<>("Changed By");
+        TableColumn<Audit, String> when = new TableColumn<>("When Occurred");
+
+        if(person.getId() == 0){
+            auditTable.getColumns().addAll(chngMsg, chngBy, when);
+            auditTable.setPlaceholder(new Label("No audits to display."));
+        } else{
+            ObservableList<Audit> data = FXCollections.observableArrayList();
+            AuditTrail auditTrail = personGateway.getAuditTrail(person.getId());
+            for(Audit a : auditTrail.getAudits()){
+                data.add(a);
+            }
+            chngMsg.setCellValueFactory(new PropertyValueFactory<>("changeMsg"));
+            chngBy.setCellValueFactory(new PropertyValueFactory<>("changedBy"));
+            when.setCellValueFactory(new PropertyValueFactory<>("whenOccurred"));
+            auditTable.setItems(data);
+            auditTable.getColumns().setAll(chngMsg, chngBy, when);
+
+        }
 
     }
 

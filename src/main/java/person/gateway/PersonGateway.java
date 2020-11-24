@@ -10,192 +10,195 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import person.People;
-import person.Person;
-import person.PersonException;
-import person.db.DBConnect;
-import person.fx.SessionParameters;
+import person.models.Audit;
+import person.models.AuditTrail;
+import person.models.Person;
+import person.models.PersonException;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.security.PublicKey;
-import java.sql.*;
-import java.text.ParseException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
-
-import static com.mysql.cj.conf.PropertyKey.logger;
 
 public class PersonGateway {
-
-
-    private static Connection connection;
+    private static String wsURL;
+    private static String sessionId;
     private static Logger logger = LogManager.getLogger();
 
-
-    public PersonGateway(Connection connection) {
-
-        this.connection = connection;
+    public PersonGateway(String url, String sessionId) {
+        this.sessionId = sessionId;
+        this.wsURL = url;
     }
 
-    public static Person getPerson(int id) {
-        PreparedStatement st = null;
-        ResultSet rs = null;
-        Person person= new Person();
-        try{
-            st = connection.prepareStatement("SELECT * FROM `Person` WHERE `id`=?");
-            st.setInt(1, id);
-            rs = st.executeQuery();
-            person.setId(id);
-            person.setFirstName(rs.getString("first_name"));
-            person.setLastName(rs.getString("last_name"));
-            person.setDateOfBirth(rs.getDate("dob").toLocalDate());
-            st.close();
-            return person;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return null;
-        }
-    }
+    public ArrayList<Person> getPeople() {
+        ArrayList<Person> people = new ArrayList<Person>();
 
-    public People fetchPeople(){
-        PreparedStatement st = null;
-        ResultSet rs = null;
-        People people = new People();
-        ArrayList<Person> list = people.getPeople();
-        try{
-            st = connection.prepareStatement("SELECT * FROM `Person` WHERE 1");
-            rs = st.executeQuery();
+        try {
+            HttpGet request = new HttpGet(wsURL + "/people");
+            // specify Authorization header
+            request.setHeader("Authorization", sessionId);
 
-                while (rs.next()) {
-                    String fName = rs.getString("first_name");
-                    logger.info("Person name: " + fName);
-                    String lName = rs.getString("last_name");
-                    LocalDate dob = rs.getDate("dob").toLocalDate();
-                    int id = rs.getInt("id");
-                    Person nextPerson = new Person(id, fName, lName, dob);
-                    list.add(nextPerson);
-                }
+            String response = waitForResponseAsString(request);
+            JSONObject arr = new JSONObject(response);
+            JSONArray pArray = arr.getJSONArray("people");
+            //People pList = new People(pArray.toList());
+            for( Object obj : pArray) {
+                JSONObject jsonObject = (JSONObject) obj;
+                people.add(new Person(jsonObject.getInt("id"), jsonObject.getString("firstName"), jsonObject.getString("lastName"), LocalDate.parse(jsonObject.getString("dateOfBirth"))));
 
-            people.setPeople(list);
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } finally {
-            try {
-                st.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
             }
-            return people;
+        } catch (Exception e) {
+            throw new PersonException(e);
+        }
+
+        return people;
+    }
+
+    public int insertPerson(Person newPerson){
+        try{
+            HttpPost request = new HttpPost(wsURL+"/people");
+            // specify Authorization header
+            request.setHeader("Authorization", sessionId);
+
+            JSONObject person = new JSONObject();
+            person.put("firstName", newPerson.getFirstName());
+            person.put("lastName", newPerson.getLastName());
+            person.put("dateOfBirth", newPerson.getDateOfBirth().toString());
+
+            String personString = person.toString();
+            StringEntity reqEntity = new StringEntity(personString);
+            request.setEntity(reqEntity);
+            request.setHeader("Accept", "application/json");
+            request.setHeader("Content-type", "application/json");
+
+            String response = waitForResponseAsString(request);
+            //JSONObject jsonObject = new JSONObject(response);
+            int id = Integer.parseInt(response);
+
+            return id;
+        } catch (Exception e) {
+            throw new PersonException(e);
         }
     }
 
-
-    public static void insertPerson(Person newPerson){
-
-        PreparedStatement st = null;
-        ResultSet rs = null;
-        logger.info(newPerson.toString());
+    public static String updatePerson(Map<String, String> updateValues, int id) {
+        String response = null;
         try {
-            st = connection.prepareStatement("INSERT INTO `Person`(`first_name`, `last_name`,  `dob`) VALUES (?,?,?)");
-            st.setString(1,newPerson.getFirstName());
-            st.setString(2, newPerson.getLastName());
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            java.util.Date utilDate = format.parse(newPerson.getDateOfBirth().toString());
-            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-            st.setDate(3, sqlDate);
-            st.executeUpdate();
-            st.close();
+            HttpPut request = new HttpPut(wsURL + "/people/" + String.valueOf(id));
+            // specify Authorization header
+            request.setHeader("Authorization", sessionId);
 
-        } catch (SQLException | ParseException throwables) {
-            throwables.printStackTrace();
-        }
+            JSONObject person = new JSONObject();
 
-        return;
-    }
-
-
-    public static void updatePerson( Map<String,String> updateValues, int id) {
-
-        logger.info("updating person with id " + id);
-        logger.info(updateValues.toString());
-        PreparedStatement st = null;
-        int rs;
-        Time time = null;
-        try {
-            if(updateValues.containsKey("firstName")) {
-                st = connection.prepareStatement("UPDATE `Person` SET `first_name`=? WHERE `id` =?");
-                st.setInt(2, id);
-                st.setString(1, updateValues.get("firstName"));
-                rs = st.executeUpdate();
+            if (updateValues.containsKey("firstName")) {
+                person.put("firstName", updateValues.get("firstName"));
             }
             if (updateValues.containsKey("lastName")) {
-                st = connection.prepareStatement("UPDATE `Person` SET `last_name`=? WHERE `id` =?");
-                st.setInt(2, id);
-                st.setString(1, updateValues.get("lastName"));
-                rs=st.executeUpdate();
+                person.put("lastName", updateValues.get("lastName"));
             }
             if (updateValues.containsKey("dateOfBirth")) {
-                st = connection.prepareStatement("UPDATE `Person` SET `dob`=? WHERE `id` =?");
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                java.util.Date utilDate = format.parse(updateValues.get("dateOfBirth"));
-                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-                st.setDate(1, sqlDate);
-                st.setInt(2, id);
-                rs = st.executeUpdate();
+                person.put("dateOfBirth", updateValues.get("dateOfBirth"));
             }
-            st.close();
-            return;
-        } catch (SQLException | ParseException throwables) {
-            throwables.printStackTrace();
+
+            String personString = person.toString();
+            StringEntity reqEntity = new StringEntity(personString);
+            request.setEntity(reqEntity);
+            request.setHeader("Accept", "application/json");
+            request.setHeader("Content-type", "application/json");
+
+            response = waitForResponseAsString(request);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return;
+        return response;
     }
 
 
-
-    public static void deletePerson( int id){
-
-        PreparedStatement st = null;
-        ResultSet success = null;
-        Time time = null;
+    public static String deletePerson(int id){
+        HttpDelete request = new HttpDelete(wsURL + "/people/" + String.valueOf(id));
+        // specify Authorization header
+        request.setHeader("Authorization", sessionId);
+        String response = null;
         try {
-            st = connection.prepareStatement("DELETE FROM `Person` WHERE `id`=?", PreparedStatement.RETURN_GENERATED_KEYS);
-            st.setInt(1,id);
-            st.executeUpdate();
-            st.close();
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            response = waitForResponseAsString(request);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-     }
+        return response;
+    }
 
-
-
-    //verify session token
-    public static int validateSessionToken(String token) throws SQLException {
-
-        PreparedStatement st = null;
+    public static AuditTrail getAuditTrail(int id){
+        HttpGet request = new HttpGet(wsURL + "/people/" + String.valueOf(id) + "/audittrail");
+        request.setHeader("Authorization", sessionId);
+        String response = null;
         try {
-            st = connection.prepareStatement("SELECT `username` FROM `Session` WHERE `token` = ?");
-            st.setString(1,token);
-            st.execute();
-            return 200;
+            response = waitForResponseAsString(request);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return 401;
+            AuditTrail auditTrail = new AuditTrail();
+            ArrayList<Audit> list = new ArrayList<Audit>();
+            JSONObject arr = new JSONObject(response);
+            JSONArray aArray = arr.getJSONArray("audits");
+            for( Object obj : aArray) {
+                JSONObject jsonObject = (JSONObject) obj;
+                logger.info(jsonObject.getString("whenOccurred"));
+                Timestamp ts = Timestamp.valueOf(jsonObject.getString("whenOccurred"));
+                list.add(new Audit(jsonObject.getInt("id"), jsonObject.getString("changeMsg"), jsonObject.getInt("changedBy"), jsonObject.getInt("personId"), ts));
+            }
+            auditTrail.setAudits(list);
+            return auditTrail;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return null;
+    }
+
+    private static String waitForResponseAsString(HttpRequestBase request) throws IOException {
+        CloseableHttpClient httpclient = null;
+        CloseableHttpResponse response = null;
+
+        try {
+
+            httpclient = HttpClients.createDefault();
+            logger.info(request.toString());
+            response = httpclient.execute(request);
+
+            switch(response.getStatusLine().getStatusCode()) {
+                case 200:
+                    // success
+                    break;
+                case 401:
+                    // bad session token
+                    throw new PersonException("401");
+                default:
+                    // something weird happened
+                    throw new PersonException("Non-200 status code returned: " + response.getStatusLine());
+            }
+
+            return parseResponseToString(response);
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new PersonException(e);
+        } finally {
+            if(response != null)
+                response.close();
+            if(httpclient != null)
+                httpclient.close();
+        }
+    }
+
+    private static String parseResponseToString(CloseableHttpResponse response) throws IOException {
+        HttpEntity entity = response.getEntity();
+
+        String ent = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+        // use org.apache.http.util.EntityUtils to read json as string
+        return ent;
     }
 
 }

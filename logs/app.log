@@ -1,55 +1,55 @@
 13:08:59.601 INFO  main.MainController :  heyLOGGED IN
-13:08:59.612 DEBUG person.Person : person constructed
-13:08:59.612 DEBUG person.Person : person constructed
-13:08:59.613 DEBUG person.Person : person constructed
+13:08:59.612 DEBUG person.models.Person : person constructed
+13:08:59.612 DEBUG person.models.Person : person constructed
+13:08:59.613 DEBUG person.models.Person : person constructed
 13:28:28.211 INFO  main.MainController :  heyLOGGED IN
-13:28:28.220 DEBUG person.Person : person constructed
-13:28:28.220 DEBUG person.Person : person constructed
-13:28:28.221 DEBUG person.Person : person constructed
+13:28:28.220 DEBUG person.models.Person : person constructed
+13:28:28.220 DEBUG person.models.Person : person constructed
+13:28:28.221 DEBUG person.models.Person : person constructed
 13:32:39.576 INFO  main.MainController :  heyLOGGED IN
-13:32:39.585 DEBUG person.Person : person constructed
-13:32:39.585 DEBUG person.Person : person constructed
-13:32:39.586 DEBUG person.Person : person constructed
+13:32:39.585 DEBUG person.models.Person : person constructed
+13:32:39.585 DEBUG person.models.Person : person constructed
+13:32:39.586 DEBUG person.models.Person : person constructed
 13:32:50.304 ERROR list.PersonListController : DELETING Nob Smith
 13:47:20.849 INFO  main.MainController :  heyLOGGED IN
-13:47:20.859 DEBUG person.Person : person constructed
-13:47:20.859 DEBUG person.Person : person constructed
-13:47:20.860 DEBUG person.Person : person constructed
-13:47:25.713 DEBUG person.Person : person constructed
+13:47:20.859 DEBUG person.models.Person : person constructed
+13:47:20.859 DEBUG person.models.Person : person constructed
+13:47:20.860 DEBUG person.models.Person : person constructed
+13:47:25.713 DEBUG person.models.Person : person constructed
 13:50:18.594 INFO  main.MainController :  heyLOGGED IN
-13:50:18.605 DEBUG person.Person : person constructed
-13:50:18.606 DEBUG person.Person : person constructed
-13:50:18.607 DEBUG person.Person : person constructed
-13:50:21.867 DEBUG person.Person : person constructed
+13:50:18.605 DEBUG person.models.Person : person constructed
+13:50:18.606 DEBUG person.models.Person : person constructed
+13:50:18.607 DEBUG person.models.Person : person constructed
+13:50:21.867 DEBUG person.models.Person : person constructed
 13:50:43.802 INFO  list.PersonListController : READING Nob Smith
 13:56:50.038 INFO  main.MainController :  heyLOGGED IN
-13:56:50.048 DEBUG person.Person : person constructed
-13:56:50.048 DEBUG person.Person : person constructed
-13:56:50.049 DEBUG person.Person : person constructed
-13:56:52.513 DEBUG person.Person : person constructed
+13:56:50.048 DEBUG person.models.Person : person constructed
+13:56:50.048 DEBUG person.models.Person : person constructed
+13:56:50.049 DEBUG person.models.Person : person constructed
+13:56:52.513 DEBUG person.models.Person : person constructed
 13:59:57.296 INFO  main.MainController :  heyLOGGED IN
-13:59:57.306 DEBUG person.Person : person constructed
-13:59:57.306 DEBUG person.Person : person constructed
-13:59:57.307 DEBUG person.Person : person constructed
-14:00:02.041 DEBUG person.Person : person constructed
+13:59:57.306 DEBUG person.models.Person : person constructed
+13:59:57.306 DEBUG person.models.Person : person constructed
+13:59:57.307 DEBUG person.models.Person : person constructed
+14:00:02.041 DEBUG person.models.Person : person constructed
 14:07:17.817 INFO  main.MainController :  heyLOGGED IN
-14:07:17.827 DEBUG person.Person : person constructed
-14:07:17.827 DEBUG person.Person : person constructed
-14:07:17.828 DEBUG person.Person : person constructed
-14:07:24.204 DEBUG person.Person : person constructed
+14:07:17.827 DEBUG person.models.Person : person constructed
+14:07:17.827 DEBUG person.models.Person : person constructed
+14:07:17.828 DEBUG person.models.Person : person constructed
+14:07:24.204 DEBUG person.models.Person : person constructed
 14:07:25.441 INFO  detail.PersonDetailController : CREATING  
-14:07:25.442 DEBUG person.Person : person constructed
-14:07:25.443 DEBUG person.Person : person constructed
-14:07:25.443 DEBUG person.Person : person constructed
+14:07:25.442 DEBUG person.models.Person : person constructed
+14:07:25.443 DEBUG person.models.Person : person constructed
+14:07:25.443 DEBUG person.models.Person : person constructed
 14:13:48.196 INFO  main.MainController :  LOGGED IN
-14:13:48.207 DEBUG person.Person : person constructed
-14:13:48.208 DEBUG person.Person : person constructed
-14:13:48.208 DEBUG person.Person : person constructed
-14:13:50.397 DEBUG person.Person : person constructed
+14:13:48.207 DEBUG person.models.Person : person constructed
+14:13:48.208 DEBUG person.models.Person : person constructed
+14:13:48.208 DEBUG person.models.Person : person constructed
+14:13:50.397 DEBUG person.models.Person : person constructed
 14:13:51.802 INFO  detail.PersonDetailController : CREATING  
-14:13:51.803 DEBUG person.Person : person constructed
-14:13:51.804 DEBUG person.Person : person constructed
-14:13:51.804 DEBUG person.Person : person constructed
+14:13:51.803 DEBUG person.models.Person : person constructed
+14:13:51.804 DEBUG person.models.Person : person constructed
+14:13:51.804 DEBUG person.models.Person : person constructed
 14:56:14.092 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
 14:56:14.140 ERROR gateway.SessionGateway : Non-200 status code returned: HTTP/1.1 404 Not Found
 14:56:14.152 INFO  gateway.SessionGateway : Login response as a string: null
@@ -74,42 +74,42 @@
 15:32:55.902 INFO  gateway.SessionGateway : Valid login.json.
 15:32:55.904 INFO  gateway.SessionGateway : Login response as a string: {"session_id":"i am a session token"}
 15:32:55.905 INFO  gateway.SessionGateway : Session token: i am a session token
-15:32:55.925 DEBUG person.Person : person constructed
-15:32:55.925 DEBUG person.Person : person constructed
-15:32:55.926 DEBUG person.Person : person constructed
+15:32:55.925 DEBUG person.models.Person : person constructed
+15:32:55.925 DEBUG person.models.Person : person constructed
+15:32:55.926 DEBUG person.models.Person : person constructed
 15:32:55.926 INFO  login.LoginController :  ragnarLOGGED IN
-15:32:55.927 DEBUG person.Person : person constructed
-15:32:55.928 DEBUG person.Person : person constructed
-15:32:55.928 DEBUG person.Person : person constructed
+15:32:55.927 DEBUG person.models.Person : person constructed
+15:32:55.928 DEBUG person.models.Person : person constructed
+15:32:55.928 DEBUG person.models.Person : person constructed
 15:36:23.626 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
 15:36:23.668 INFO  gateway.SessionGateway : Valid login.json.
 15:36:23.670 INFO  gateway.SessionGateway : Login response as a string: {"session_id":"i am a session token"}
 15:36:23.671 INFO  gateway.SessionGateway : Session token: i am a session token
-15:36:23.688 DEBUG person.Person : person constructed
-15:36:23.688 DEBUG person.Person : person constructed
-15:36:23.689 DEBUG person.Person : person constructed
+15:36:23.688 DEBUG person.models.Person : person constructed
+15:36:23.688 DEBUG person.models.Person : person constructed
+15:36:23.689 DEBUG person.models.Person : person constructed
 15:36:23.689 INFO  login.LoginController :  Tim is the first person in list.
 15:36:23.689 INFO  login.LoginController :  ragnar LOGGED IN
-15:36:23.690 DEBUG person.Person : person constructed
-15:36:23.690 DEBUG person.Person : person constructed
-15:36:23.691 DEBUG person.Person : person constructed
+15:36:23.690 DEBUG person.models.Person : person constructed
+15:36:23.690 DEBUG person.models.Person : person constructed
+15:36:23.691 DEBUG person.models.Person : person constructed
 15:50:37.613 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
 15:50:37.657 INFO  gateway.SessionGateway : Valid login.json.
 15:50:37.659 INFO  gateway.SessionGateway : Login response as a string: {"session_id":"i am a session token"}
 15:50:37.660 INFO  gateway.SessionGateway : Session token: i am a session token
 15:50:37.661 INFO  login.LoginController :  ragnar LOGGED IN
-15:50:37.691 DEBUG person.Person : person constructed
-15:50:37.691 DEBUG person.Person : person constructed
-15:50:37.692 DEBUG person.Person : person constructed
+15:50:37.691 DEBUG person.models.Person : person constructed
+15:50:37.691 DEBUG person.models.Person : person constructed
+15:50:37.692 DEBUG person.models.Person : person constructed
 15:50:37.695 INFO  list.PersonListController :  Tim is the first person in list.
 15:55:39.177 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
 15:55:39.219 INFO  gateway.SessionGateway : Valid login.json.
 15:55:39.221 INFO  gateway.SessionGateway : Login response as a string: {"session_id":"i am a session token"}
 15:55:39.222 INFO  gateway.SessionGateway : Session token: i am a session token
 15:55:39.223 INFO  login.LoginController :  ragnar LOGGED IN
-15:55:39.253 DEBUG person.Person : person constructed
-15:55:39.254 DEBUG person.Person : person constructed
-15:55:39.254 DEBUG person.Person : person constructed
+15:55:39.253 DEBUG person.models.Person : person constructed
+15:55:39.254 DEBUG person.models.Person : person constructed
+15:55:39.254 DEBUG person.models.Person : person constructed
 15:55:39.254 INFO  list.PersonListController :  Tim is the first person in list.
 15:56:18.656 INFO  list.PersonListController : READING Tim boop
 16:32:04.986 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
@@ -117,9 +117,9 @@
 16:32:05.044 INFO  gateway.SessionGateway : Login response as a string: {"session_id":"i am a session token"}
 16:32:05.047 INFO  gateway.SessionGateway : Session token: i am a session token
 16:32:05.048 INFO  login.LoginController :  ragnar LOGGED IN
-16:32:05.082 DEBUG person.Person : person constructed
-16:32:05.082 DEBUG person.Person : person constructed
-16:32:05.082 DEBUG person.Person : person constructed
+16:32:05.082 DEBUG person.models.Person : person constructed
+16:32:05.082 DEBUG person.models.Person : person constructed
+16:32:05.082 DEBUG person.models.Person : person constructed
 16:32:05.083 INFO  list.PersonListController : Retrieved list of people.
 16:34:01.392 INFO  list.PersonListController : DELETING Tim boop
 20:33:08.960 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
@@ -127,50 +127,50 @@
 20:33:09.069 INFO  gateway.SessionGateway : Login response as a string: {"session_id":"i am a session token"}
 20:33:09.070 INFO  gateway.SessionGateway : Session token: i am a session token
 20:33:09.072 INFO  login.LoginController :  ragnar LOGGED IN
-20:33:09.107 DEBUG person.Person : person constructed
-20:33:09.107 DEBUG person.Person : person constructed
-20:33:09.108 DEBUG person.Person : person constructed
+20:33:09.107 DEBUG person.models.Person : person constructed
+20:33:09.107 DEBUG person.models.Person : person constructed
+20:33:09.108 DEBUG person.models.Person : person constructed
 20:33:09.108 INFO  list.PersonListController : Retrieved list of people.
 20:38:42.874 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
 20:38:42.914 INFO  gateway.SessionGateway : Valid login.json.
 20:38:42.916 INFO  gateway.SessionGateway : Login response as a string: {"session_id":"i am a session token"}
 20:38:42.917 INFO  gateway.SessionGateway : Session token: i am a session token
 20:38:42.918 INFO  login.LoginController :  ragnar LOGGED IN
-20:38:42.945 DEBUG person.Person : person constructed
-20:38:42.945 DEBUG person.Person : person constructed
-20:38:42.946 DEBUG person.Person : person constructed
+20:38:42.945 DEBUG person.models.Person : person constructed
+20:38:42.945 DEBUG person.models.Person : person constructed
+20:38:42.946 DEBUG person.models.Person : person constructed
 20:38:42.946 INFO  list.PersonListController : Retrieved list of people.
-20:38:57.793 DEBUG person.Person : person constructed
+20:38:57.793 DEBUG person.models.Person : person constructed
 20:42:49.136 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
 20:42:49.181 INFO  gateway.SessionGateway : Valid login.json.
 20:42:49.183 INFO  gateway.SessionGateway : Login response as a string: {"session_id":"i am a session token"}
 20:42:49.184 INFO  gateway.SessionGateway : Session token: i am a session token
 20:42:49.185 INFO  login.LoginController :  ragnar LOGGED IN
-20:42:49.215 DEBUG person.Person : person constructed
-20:42:49.215 DEBUG person.Person : person constructed
-20:42:49.216 DEBUG person.Person : person constructed
+20:42:49.215 DEBUG person.models.Person : person constructed
+20:42:49.215 DEBUG person.models.Person : person constructed
+20:42:49.216 DEBUG person.models.Person : person constructed
 20:42:49.216 INFO  list.PersonListController : Retrieved list of people.
-20:42:53.263 DEBUG person.Person : person constructed
+20:42:53.263 DEBUG person.models.Person : person constructed
 20:44:14.541 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
 20:44:14.588 INFO  gateway.SessionGateway : Valid login.json.
 20:44:14.590 INFO  gateway.SessionGateway : Login response as a string: {"session_id":"i am a session token"}
 20:44:14.591 INFO  gateway.SessionGateway : Session token: i am a session token
 20:44:14.592 INFO  login.LoginController :  ragnar LOGGED IN
-20:44:14.621 DEBUG person.Person : person constructed
-20:44:14.622 DEBUG person.Person : person constructed
-20:44:14.622 DEBUG person.Person : person constructed
+20:44:14.621 DEBUG person.models.Person : person constructed
+20:44:14.622 DEBUG person.models.Person : person constructed
+20:44:14.622 DEBUG person.models.Person : person constructed
 20:44:14.622 INFO  list.PersonListController : Retrieved list of people.
-20:44:15.993 DEBUG person.Person : person constructed
+20:44:15.993 DEBUG person.models.Person : person constructed
 20:49:05.259 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
 20:49:05.300 INFO  gateway.SessionGateway : Valid login.json.
 20:49:05.301 INFO  gateway.SessionGateway : Login response as a string: {"session_id":"i am a session token"}
 20:49:05.302 INFO  gateway.SessionGateway : Session token: i am a session token
 20:49:05.303 INFO  login.LoginController :  ragnar LOGGED IN
-20:49:05.334 DEBUG person.Person : person constructed
-20:49:05.334 DEBUG person.Person : person constructed
-20:49:05.335 DEBUG person.Person : person constructed
+20:49:05.334 DEBUG person.models.Person : person constructed
+20:49:05.334 DEBUG person.models.Person : person constructed
+20:49:05.335 DEBUG person.models.Person : person constructed
 20:49:05.335 INFO  list.PersonListController : Retrieved list of people.
-20:49:07.348 DEBUG person.Person : person constructed
+20:49:07.348 DEBUG person.models.Person : person constructed
 20:57:17.043 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
 20:57:17.087 INFO  gateway.SessionGateway : Valid login.json.
 20:57:17.088 INFO  gateway.SessionGateway : Login response as a string: {"session_id":"i am a session token"}
@@ -186,52 +186,52 @@
 21:00:43.130 INFO  gateway.SessionGateway : Login response as a string: {"session_id":"i am a session token"}
 21:00:43.131 INFO  gateway.SessionGateway : Session token: i am a session token
 21:00:43.132 INFO  login.LoginController :  ragnar LOGGED IN
-21:00:43.168 DEBUG person.Person : person constructed
-21:00:43.168 DEBUG person.Person : person constructed
-21:00:43.169 DEBUG person.Person : person constructed
+21:00:43.168 DEBUG person.models.Person : person constructed
+21:00:43.168 DEBUG person.models.Person : person constructed
+21:00:43.169 DEBUG person.models.Person : person constructed
 21:00:43.169 INFO  list.PersonListController : Retrieved list of people.
-21:00:44.808 DEBUG person.Person : person constructed
+21:00:44.808 DEBUG person.models.Person : person constructed
 21:04:36.575 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
 21:04:36.674 INFO  gateway.SessionGateway : Valid login.json.
 21:04:36.676 INFO  gateway.SessionGateway : Login response as a string: {"session_id":"i am a session token"}
 21:04:36.677 INFO  gateway.SessionGateway : Session token: i am a session token
 21:04:36.678 INFO  login.LoginController :  ragnar LOGGED IN
-21:04:36.708 DEBUG person.Person : person constructed
-21:04:36.708 DEBUG person.Person : person constructed
-21:04:36.709 DEBUG person.Person : person constructed
+21:04:36.708 DEBUG person.models.Person : person constructed
+21:04:36.708 DEBUG person.models.Person : person constructed
+21:04:36.709 DEBUG person.models.Person : person constructed
 21:04:36.709 INFO  list.PersonListController : Retrieved list of people.
-21:04:37.965 DEBUG person.Person : person constructed
+21:04:37.965 DEBUG person.models.Person : person constructed
 21:22:10.312 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
 21:22:10.358 INFO  gateway.SessionGateway : Valid login.json.
 21:22:10.360 INFO  gateway.SessionGateway : Login response as a string: {"session_id":"i am a session token"}
 21:22:10.361 INFO  gateway.SessionGateway : Session token: i am a session token
 21:22:10.362 INFO  login.LoginController :  ragnar LOGGED IN
-21:22:10.392 DEBUG person.Person : person constructed
-21:22:10.393 DEBUG person.Person : person constructed
-21:22:10.393 DEBUG person.Person : person constructed
+21:22:10.392 DEBUG person.models.Person : person constructed
+21:22:10.393 DEBUG person.models.Person : person constructed
+21:22:10.393 DEBUG person.models.Person : person constructed
 21:22:10.393 INFO  list.PersonListController : Retrieved list of people.
-21:22:11.587 DEBUG person.Person : person constructed
+21:22:11.587 DEBUG person.models.Person : person constructed
 21:34:40.889 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
 21:34:40.936 INFO  gateway.SessionGateway : Valid login.json.
 21:34:40.938 INFO  gateway.SessionGateway : Login response as a string: {"session_id":"i am a session token"}
 21:34:40.939 INFO  gateway.SessionGateway : Session token: i am a session token
 21:34:40.940 INFO  login.LoginController :  ragnar LOGGED IN
-21:34:40.974 DEBUG person.Person : person constructed
-21:34:40.975 DEBUG person.Person : person constructed
-21:34:40.975 DEBUG person.Person : person constructed
+21:34:40.974 DEBUG person.models.Person : person constructed
+21:34:40.975 DEBUG person.models.Person : person constructed
+21:34:40.975 DEBUG person.models.Person : person constructed
 21:34:40.975 INFO  list.PersonListController : Retrieved list of people.
-21:34:42.294 DEBUG person.Person : person constructed
+21:34:42.294 DEBUG person.models.Person : person constructed
 21:39:35.711 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
 21:39:35.753 INFO  gateway.SessionGateway : Valid login.json.
 21:39:35.754 INFO  gateway.SessionGateway : Login response as a string: {"session_id":"i am a session token"}
 21:39:35.755 INFO  gateway.SessionGateway : Session token: i am a session token
 21:39:35.756 INFO  login.LoginController :  ragnar LOGGED IN
 21:39:35.777 INFO  gateway.PersonGateway : http://localhost:8080/people
-21:39:35.788 DEBUG person.Person : person constructed
-21:39:35.789 DEBUG person.Person : person constructed
-21:39:35.789 DEBUG person.Person : person constructed
+21:39:35.788 DEBUG person.models.Person : person constructed
+21:39:35.789 DEBUG person.models.Person : person constructed
+21:39:35.789 DEBUG person.models.Person : person constructed
 21:39:35.789 INFO  list.PersonListController : Retrieved list of people.
-21:39:37.008 DEBUG person.Person : person constructed
+21:39:37.008 DEBUG person.models.Person : person constructed
 21:39:56.595 INFO  gateway.PersonGateway : http//:localhost:8080/people
 21:42:45.959 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
 21:42:46.003 INFO  gateway.SessionGateway : Valid login.json.
@@ -239,11 +239,11 @@
 21:42:46.005 INFO  gateway.SessionGateway : Session token: i am a session token
 21:42:46.006 INFO  login.LoginController :  ragnar LOGGED IN
 21:42:46.023 INFO  gateway.PersonGateway : http://localhost:8080/people
-21:42:46.033 DEBUG person.Person : person constructed
-21:42:46.034 DEBUG person.Person : person constructed
-21:42:46.034 DEBUG person.Person : person constructed
+21:42:46.033 DEBUG person.models.Person : person constructed
+21:42:46.034 DEBUG person.models.Person : person constructed
+21:42:46.034 DEBUG person.models.Person : person constructed
 21:42:46.034 INFO  list.PersonListController : Retrieved list of people.
-21:42:47.132 DEBUG person.Person : person constructed
+21:42:47.132 DEBUG person.models.Person : person constructed
 21:43:02.605 INFO  gateway.PersonGateway : http//:localhost:8080/people
 21:43:02.607 ERROR gateway.PersonGateway : null
 21:46:12.152 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
@@ -252,11 +252,11 @@
 21:46:12.193 INFO  gateway.SessionGateway : Session token: i am a session token
 21:46:12.194 INFO  login.LoginController :  ragnar LOGGED IN
 21:46:12.210 INFO  gateway.PersonGateway : GET http://localhost:8080/people HTTP/1.1
-21:46:12.221 DEBUG person.Person : person constructed
-21:46:12.221 DEBUG person.Person : person constructed
-21:46:12.221 DEBUG person.Person : person constructed
+21:46:12.221 DEBUG person.models.Person : person constructed
+21:46:12.221 DEBUG person.models.Person : person constructed
+21:46:12.221 DEBUG person.models.Person : person constructed
 21:46:12.221 INFO  list.PersonListController : Retrieved list of people.
-21:46:13.210 DEBUG person.Person : person constructed
+21:46:13.210 DEBUG person.models.Person : person constructed
 21:46:31.407 INFO  gateway.PersonGateway : POST http//:localhost:8080/people HTTP/1.1
 21:46:31.409 ERROR gateway.PersonGateway : null
 21:51:15.197 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
@@ -265,11 +265,11 @@
 21:51:15.245 INFO  gateway.SessionGateway : Session token: i am a session token
 21:51:15.246 INFO  login.LoginController :  ragnar LOGGED IN
 21:51:15.264 INFO  gateway.PersonGateway : GET http://localhost:8080/people HTTP/1.1
-21:51:15.275 DEBUG person.Person : person constructed
-21:51:15.276 DEBUG person.Person : person constructed
-21:51:15.276 DEBUG person.Person : person constructed
+21:51:15.275 DEBUG person.models.Person : person constructed
+21:51:15.276 DEBUG person.models.Person : person constructed
+21:51:15.276 DEBUG person.models.Person : person constructed
 21:51:15.276 INFO  list.PersonListController : Retrieved list of people.
-21:51:16.418 DEBUG person.Person : person constructed
+21:51:16.418 DEBUG person.models.Person : person constructed
 21:51:34.488 INFO  gateway.PersonGateway : POST http//:localhost:8080/people HTTP/1.1
 21:51:34.490 ERROR gateway.PersonGateway : null
 21:51:41.155 INFO  gateway.PersonGateway : POST http//:localhost:8080/people HTTP/1.1
@@ -284,11 +284,11 @@
 21:54:05.041 INFO  gateway.SessionGateway : Session token: i am a session token
 21:54:05.043 INFO  login.LoginController :  ragnar LOGGED IN
 21:54:05.060 INFO  gateway.PersonGateway : GET http://localhost:8080/people HTTP/1.1
-21:54:05.071 DEBUG person.Person : person constructed
-21:54:05.071 DEBUG person.Person : person constructed
-21:54:05.072 DEBUG person.Person : person constructed
+21:54:05.071 DEBUG person.models.Person : person constructed
+21:54:05.071 DEBUG person.models.Person : person constructed
+21:54:05.072 DEBUG person.models.Person : person constructed
 21:54:05.072 INFO  list.PersonListController : Retrieved list of people.
-21:54:10.852 DEBUG person.Person : person constructed
+21:54:10.852 DEBUG person.models.Person : person constructed
 21:54:31.312 INFO  gateway.PersonGateway : POST http://localhost:8080/people HTTP/1.1
 22:04:20.208 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
 22:04:20.250 INFO  gateway.SessionGateway : Valid login.json.
@@ -296,17 +296,17 @@
 22:04:20.252 INFO  gateway.SessionGateway : Session token: i am a session token
 22:04:20.253 INFO  login.LoginController :  ragnar LOGGED IN
 22:04:20.272 INFO  gateway.PersonGateway : GET http://localhost:8080/people HTTP/1.1
-22:04:20.285 DEBUG person.Person : person constructed
-22:04:20.285 DEBUG person.Person : person constructed
-22:04:20.286 DEBUG person.Person : person constructed
+22:04:20.285 DEBUG person.models.Person : person constructed
+22:04:20.285 DEBUG person.models.Person : person constructed
+22:04:20.286 DEBUG person.models.Person : person constructed
 22:04:20.286 INFO  list.PersonListController : Retrieved list of people.
-22:04:21.938 DEBUG person.Person : person constructed
+22:04:21.938 DEBUG person.models.Person : person constructed
 22:04:37.895 INFO  gateway.PersonGateway : POST http://localhost:8080/people HTTP/1.1
 22:04:37.900 INFO  detail.PersonDetailController : CREATING good variables
 22:04:37.905 INFO  gateway.PersonGateway : GET http://localhost:8080/people HTTP/1.1
-22:04:37.909 DEBUG person.Person : person constructed
-22:04:37.909 DEBUG person.Person : person constructed
-22:04:37.910 DEBUG person.Person : person constructed
+22:04:37.909 DEBUG person.models.Person : person constructed
+22:04:37.909 DEBUG person.models.Person : person constructed
+22:04:37.910 DEBUG person.models.Person : person constructed
 22:04:37.910 INFO  list.PersonListController : Retrieved list of people.
 14:08:56.740 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
 14:09:11.277 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
@@ -315,9 +315,9 @@
 14:09:11.364 INFO  gateway.SessionGateway : Session token: i am a session token
 14:09:11.365 INFO  login.LoginController :  ragnar LOGGED IN
 14:09:11.384 INFO  gateway.PersonGateway : GET http://localhost:8080/people HTTP/1.1
-14:09:11.397 DEBUG person.Person : person constructed
-14:09:11.398 DEBUG person.Person : person constructed
-14:09:11.398 DEBUG person.Person : person constructed
+14:09:11.397 DEBUG person.models.Person : person constructed
+14:09:11.398 DEBUG person.models.Person : person constructed
+14:09:11.398 DEBUG person.models.Person : person constructed
 14:09:11.398 INFO  list.PersonListController : Retrieved list of people.
 14:10:07.640 INFO  list.PersonListController : DELETING Tam boop
 14:10:07.646 INFO  gateway.PersonGateway : DELETE http://localhost:8080/3 HTTP/1.1
@@ -328,9 +328,9 @@
 14:12:42.094 INFO  gateway.SessionGateway : Session token: i am a session token
 14:12:42.096 INFO  login.LoginController :  ragnar LOGGED IN
 14:12:42.116 INFO  gateway.PersonGateway : GET http://localhost:8080/people HTTP/1.1
-14:12:42.127 DEBUG person.Person : person constructed
-14:12:42.128 DEBUG person.Person : person constructed
-14:12:42.128 DEBUG person.Person : person constructed
+14:12:42.127 DEBUG person.models.Person : person constructed
+14:12:42.128 DEBUG person.models.Person : person constructed
+14:12:42.128 DEBUG person.models.Person : person constructed
 14:12:42.128 INFO  list.PersonListController : Retrieved list of people.
 14:12:44.899 INFO  list.PersonListController : READING Tim boop
 14:14:34.766 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
@@ -339,9 +339,9 @@
 14:14:34.812 INFO  gateway.SessionGateway : Session token: i am a session token
 14:14:34.813 INFO  login.LoginController :  ragnar LOGGED IN
 14:14:34.831 INFO  gateway.PersonGateway : GET http://localhost:8080/people HTTP/1.1
-14:14:34.841 DEBUG person.Person : person constructed
-14:14:34.842 DEBUG person.Person : person constructed
-14:14:34.842 DEBUG person.Person : person constructed
+14:14:34.841 DEBUG person.models.Person : person constructed
+14:14:34.842 DEBUG person.models.Person : person constructed
+14:14:34.842 DEBUG person.models.Person : person constructed
 14:14:34.842 INFO  list.PersonListController : Retrieved list of people.
 14:14:36.751 INFO  list.PersonListController : READING Tim boop
 14:20:51.315 INFO  gateway.SessionGateway : credentials: {"password":"flapjacks","username":"ragnar"}
@@ -350,9 +350,9 @@
 14:20:51.359 INFO  gateway.SessionGateway : Session token: i am a session token
 14:20:51.360 INFO  login.LoginController :  ragnar LOGGED IN
 14:20:51.379 INFO  gateway.PersonGateway : GET http://localhost:8080/people HTTP/1.1
-14:20:51.390 DEBUG person.Person : person constructed
-14:20:51.391 DEBUG person.Person : person constructed
-14:20:51.391 DEBUG person.Person : person constructed
+14:20:51.390 DEBUG person.models.Person : person constructed
+14:20:51.391 DEBUG person.models.Person : person constructed
+14:20:51.391 DEBUG person.models.Person : person constructed
 14:20:51.392 INFO  list.PersonListController : Retrieved list of people.
 14:20:53.194 INFO  list.PersonListController : READING Tim boop
 14:20:57.652 INFO  gateway.PersonGateway : PUT http://localhost:8080/1 HTTP/1.1
@@ -363,17 +363,17 @@
 14:23:22.154 INFO  gateway.SessionGateway : Session token: i am a session token
 14:23:22.155 INFO  login.LoginController :  ragnar LOGGED IN
 14:23:22.172 INFO  gateway.PersonGateway : GET http://localhost:8080/people HTTP/1.1
-14:23:22.184 DEBUG person.Person : person constructed
-14:23:22.185 DEBUG person.Person : person constructed
-14:23:22.185 DEBUG person.Person : person constructed
+14:23:22.184 DEBUG person.models.Person : person constructed
+14:23:22.185 DEBUG person.models.Person : person constructed
+14:23:22.185 DEBUG person.models.Person : person constructed
 14:23:22.185 INFO  list.PersonListController : Retrieved list of people.
 14:23:24.085 INFO  list.PersonListController : READING Tim boop
 14:23:28.102 INFO  gateway.PersonGateway : PUT http://localhost:8080/people/1 HTTP/1.1
 14:23:28.106 INFO  detail.PersonDetailController : UPDATING Tom boop
 14:23:28.113 INFO  gateway.PersonGateway : GET http://localhost:8080/people HTTP/1.1
-14:23:28.116 DEBUG person.Person : person constructed
-14:23:28.117 DEBUG person.Person : person constructed
-14:23:28.117 DEBUG person.Person : person constructed
+14:23:28.116 DEBUG person.models.Person : person constructed
+14:23:28.117 DEBUG person.models.Person : person constructed
+14:23:28.117 DEBUG person.models.Person : person constructed
 14:23:28.117 INFO  list.PersonListController : Retrieved list of people.
 14:23:43.867 INFO  list.PersonListController : DELETING Tim boop
 14:23:43.871 INFO  gateway.PersonGateway : DELETE http://localhost:8080/people/1 HTTP/1.1
@@ -383,8 +383,8 @@
 14:38:28.592 INFO  gateway.SessionGateway : Session token: i am a session token
 14:38:28.593 INFO  login.LoginController :  ragnar LOGGED IN
 14:38:28.615 INFO  gateway.PersonGateway : GET http://localhost:8080/people HTTP/1.1
-14:38:28.630 DEBUG person.Person : person constructed
-14:38:28.631 DEBUG person.Person : person constructed
-14:38:28.631 DEBUG person.Person : person constructed
+14:38:28.630 DEBUG person.models.Person : person constructed
+14:38:28.631 DEBUG person.models.Person : person constructed
+14:38:28.631 DEBUG person.models.Person : person constructed
 14:38:28.631 INFO  list.PersonListController : Retrieved list of people.
-14:39:20.402 DEBUG person.Person : person constructed
+14:39:20.402 DEBUG person.models.Person : person constructed

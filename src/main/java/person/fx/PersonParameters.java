@@ -1,6 +1,6 @@
 package person.fx;
 
-import person.Person;
+import person.models.Person;
 
 public class PersonParameters {
     private static Person personParm;

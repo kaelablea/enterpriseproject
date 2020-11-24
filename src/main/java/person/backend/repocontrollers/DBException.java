@@ -1,4 +1,4 @@
-package person.db;
+package person.backend.repocontrollers;
 
 
 public class DBException extends RuntimeException {

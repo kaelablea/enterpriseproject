@@ -1,4 +1,4 @@
-package person.list;
+package person.fx.fxcontrollers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,32 +11,21 @@ import javafx.scene.control.ListView;
 import javafx.util.Callback;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONObject;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-import person.People;
-import person.Person;
+import person.models.Person;
 import person.fx.PersonParameters;
 import person.fx.SessionParameters;
 import person.fx.ViewSwitcher;
 import person.fx.ViewType;
-import person.gateway.PersonController;
 import person.gateway.PersonGateway;
 
 import java.net.URL;
-import java.sql.Connection;
 import java.time.LocalDate;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 public class PersonListController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
-    RestTemplate restTemplate= new RestTemplate();
-
+    PersonGateway personGateway;
     @FXML
     private Button addPerson, deletePerson, updatePerson;
 
@@ -44,6 +33,9 @@ public class PersonListController implements Initializable {
     private ListView<Person> personList;
 
     private ObservableList<Person> people;
+
+    public PersonListController() {
+    }
 
     @FXML
     void handler(ActionEvent event) {
@@ -55,14 +47,9 @@ public class PersonListController implements Initializable {
                 int index = personList.getSelectionModel().getSelectedIndex();
                 Person person = personList.getSelectionModel().getSelectedItem();
                 logger.info("DELETING " + person.getFirstName() + " " + person.getLastName());
-                people.remove(person);
                 personList.getItems().remove(index);
-                String uri = "http://localhost:8080/people/" + person.getId();
-                HttpHeaders header = new HttpHeaders();
-                header.set("Authorization",SessionParameters.getSessionToken());
-                HttpEntity auth = new HttpEntity(header);
-                restTemplate.exchange(uri, HttpMethod.DELETE, auth, String.class);
-
+                people.remove(person);
+                personGateway.deletePerson(person.getId());
             }
             else{
                 logger.error("No Person Selected To Delete");
@@ -84,18 +71,14 @@ public class PersonListController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-
         people = FXCollections.observableArrayList();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", SessionParameters.getSessionToken());
-        HttpEntity auth = new HttpEntity<>(headers);
-        ResponseEntity<People> response = restTemplate.exchange("http://localhost:8080/people", HttpMethod.GET, auth, People.class);
-        logger.info("Retrieved list of people." + response.getBody());
-        People list = response.getBody();
-        ArrayList<Person> personArrayList = list.getPeople();
-        for (Person p : personArrayList) {
-            logger.info("Person: " + p.toString());
-            people.add(p);
+        //Should I put PersonGateway in personParam?
+        //Would be cleaner(?) and still could make more than one if necessary
+        personGateway = new PersonGateway("http://localhost:8080", SessionParameters.getSessionToken());
+        ArrayList<Person> listOfPeople = personGateway.getPeople();
+        logger.info("Retrieved list of people.");
+        for(Person i :  listOfPeople){
+            people.add(i);
         }
         personList.setItems(people);
         personList.setCellFactory(new Callback<ListView<Person>, ListCell<Person>>() {
@@ -117,6 +100,5 @@ public class PersonListController implements Initializable {
         });
         logger.info(personList.toString());
     }
-
 
 }
