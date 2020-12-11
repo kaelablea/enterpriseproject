@@ -198,7 +198,7 @@ public class PersonRepo {
 
         PreparedStatement st = null;
         ResultSet rs = null;
-        logger.info(newPerson.toString());
+
         try {
             st = connection.prepareStatement("INSERT INTO `Person`(`first_name`, `last_name`,  `dob`) VALUES (?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1,newPerson.getFirstName());
@@ -241,7 +241,7 @@ public class PersonRepo {
             st.setInt(1,id);
             rs = st.executeQuery();
             rs.first();
-            logger.info(rs.toString());
+            //logger.info(rs.toString());
             person.setFirstName(rs.getString("first_name"));
             person.setLastName(rs.getString("last_name"));
             person.setDateOfBirth(rs.getDate("dob").toLocalDate());

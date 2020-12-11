@@ -142,8 +142,9 @@ public class PersonDetailController implements Initializable {
             person.setLastName(lastName.getText());
             person.setDateOfBirth(dob.getValue());
             changedValues.put("lastModified", person.getLastModified().toString());
-            String response = personGateway.updatePerson(changedValues, person.getId());
-            if(response.contains("Non-200 status code returned:" )){
+            try{
+                personGateway.updatePerson(changedValues, person.getId());
+            } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "This person has been modified by someone else!");
                 alert.showAndWait();
                 throw new PersonException("Optimistic locking.");

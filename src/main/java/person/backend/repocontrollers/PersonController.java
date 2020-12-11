@@ -98,7 +98,7 @@ public class PersonController {
             throwables.printStackTrace();
             return new ResponseEntity("", HttpStatus.valueOf(401));
         }
-        logger.info(newPerson.toString());
+
         try {
             Audit audit = PersonRepo.insertPerson(newPerson, token);
             new AuditRepo(connection).addAudit(audit, token);
@@ -126,6 +126,7 @@ public class PersonController {
         logger.info(updateValues.toString());
         try {
             Person checkModified = PersonRepo.getPerson(id);
+            logger.info(checkModified.getLastModified() + " " + updateValues.get("lastModified"));
             if(!checkModified.getLastModified().toString().equals(updateValues.get("lastModified"))){
                 return new ResponseEntity<String>("", HttpStatus.valueOf(201));
             }
