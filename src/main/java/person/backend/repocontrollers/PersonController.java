@@ -18,7 +18,9 @@ import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Map;
 
 @RestController
@@ -117,6 +119,7 @@ public class PersonController {
     @PutMapping("/people/{id}")
     public static ResponseEntity<String> updatePerson(@RequestHeader(value = "Authorization") String token, @RequestBody Map<String,String> updateValues, @PathVariable("id") int id) {
         int valid = 0;
+        Calendar cal = Calendar.getInstance();
         try {
             valid =  new PersonRepo(connection).validateSessionToken(token);
         } catch (SQLException throwables) {
@@ -126,6 +129,10 @@ public class PersonController {
         logger.info(updateValues.toString());
         try {
             Person checkModified = PersonRepo.getPerson(id);
+            cal.setTimeInMillis(checkModified.getLastModified().getTime());
+            cal.add(Calendar.HOUR, 6);
+            checkModified.setLastModified(new Timestamp(cal.getTime().getTime()));
+
             logger.info(checkModified.getLastModified() + " " + updateValues.get("lastModified"));
             if(!checkModified.getLastModified().toString().equals(updateValues.get("lastModified"))){
                 return new ResponseEntity<String>("", HttpStatus.valueOf(201));
@@ -199,7 +206,7 @@ public class PersonController {
         try{
             AuditTrail auditTrail= new AuditTrail();
             auditTrail.setAudits(new AuditRepo(connection).getAuditTrail(id));
-            //logger.info(auditTrail.getAudits().get(0).getWhenOccurred().toString());
+
             return new ResponseEntity<AuditTrail>(auditTrail, HttpStatus.valueOf(200));
         }catch (DBException db) {
             db.printStackTrace();

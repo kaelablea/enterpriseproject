@@ -7,10 +7,9 @@ package person.models;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Date;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Date;
 
 public class Person {
     private static final Logger logger = org.apache.logging.log4j.LogManager.getLogger();
@@ -27,7 +26,7 @@ public class Person {
         this.id = 0;
     }
 
-    public Person(int id, String firstName, String lastName, LocalDate dateOfBirth, Timestamp lastModified) {
+    public Person(int id, String firstName, String lastName, LocalDate dateOfBirth, Date lastModified) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -118,17 +117,18 @@ public class Person {
         return age;
     }
 
-    public Timestamp getLastModified() {
-        return (Timestamp) lastModified;
+    public Date getLastModified() {
+        return  lastModified;
     }
 
-    public void setLastModified(Timestamp lastModified) {
+    public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
     }
 
     public void setAge(int age) {
         this.age = age;
     }
+
 
 
 }

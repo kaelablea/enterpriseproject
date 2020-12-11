@@ -2,7 +2,6 @@ package person.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 public class Audit {
@@ -20,7 +19,7 @@ public class Audit {
     }
 
     //When retrieving audits
-    public Audit(int id, String changeMsg, int changedBy, int personId, Timestamp whenOccurred){
+    public Audit(int id, String changeMsg, int changedBy, int personId, Date whenOccurred){
         this.id = id;
         this.changeMsg = changeMsg;
         this.changedBy = changedBy;
@@ -60,11 +59,11 @@ public class Audit {
         this.personId = personId;
     }
 
-    public Timestamp getWhenOccurred() {
-        return (Timestamp) whenOccurred;
+    public Date getWhenOccurred() {
+        return whenOccurred;
     }
 
-    public void setWhenOccurred(Timestamp whenOccurred) {
+    public void setWhenOccurred(Date whenOccurred) {
         this.whenOccurred = whenOccurred;
     }
 }

@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 public class PersonGateway {
@@ -42,8 +43,8 @@ public class PersonGateway {
             person.setFirstName(obj.getString("firstName"));
             person.setLastName(obj.getString("lastName"));
             person.setDateOfBirth(LocalDate.parse(obj.getString("dateOfBirth")));
-            Timestamp ts = Timestamp.valueOf(obj.getString("lastModified"));
-            person.setLastModified(ts);
+            Date ts = Timestamp.valueOf(obj.getString("lastModified"));
+            person.setLastModified((Timestamp) ts);
             return person;
         } catch (IOException e) {
             e.printStackTrace();
