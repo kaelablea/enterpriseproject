@@ -54,9 +54,17 @@ public class PersonController {
     }
 
     @GetMapping("/people")
-    public ResponseEntity<People> fetchPeople(@RequestHeader("Authorization") String token){
+    public ResponseEntity<People> fetchPeople(@RequestHeader("Authorization") String token, @RequestParam(required = false) Map<String,String> X){
         int valid= 0;
         People people = new People();
+        String lName =null;
+        int page=0;
+        if(X.containsKey("lastName")){
+            lName = X.get("lastName");
+        }
+        if(X.containsKey("pageNum")){
+            page= Integer.parseInt(X.get("pageNum"));
+        }
 
         try {
             valid = new PersonRepo(connection).validateSessionToken(token);
@@ -64,8 +72,17 @@ public class PersonController {
             throwables.printStackTrace();
             return new ResponseEntity<People>(HttpStatus.valueOf(401));
         }
-
-        people = new PersonRepo(connection).fetchPeople();
+        if (page>0) {
+            if(lName != null){
+                people = new PersonRepo(connection).fetchPeople(page,lName);
+            }
+            else{
+                people = new PersonRepo(connection).fetchPeople(page);
+            }
+        }
+        else{
+            people = new PersonRepo(connection).fetchPeople();
+        }
 
 
         ResponseEntity<People> response = new ResponseEntity<People>(people, HttpStatus.valueOf(200));
@@ -108,6 +125,10 @@ public class PersonController {
         }
         logger.info(updateValues.toString());
         try {
+            Person checkModified = PersonRepo.getPerson(id);
+            if(!checkModified.getLastModified().toString().equals(updateValues.get("lastModified"))){
+                return new ResponseEntity<String>("", HttpStatus.valueOf(201));
+            }
             ArrayList<String> update =PersonRepo.updatePerson(updateValues, id);
             for(String msg: update){
                  Audit newAudit = new Audit(msg,id);
@@ -143,6 +164,7 @@ public class PersonController {
             return new ResponseEntity<String>("",HttpStatus.valueOf(404));
         }
     }
+
 
     @GetMapping("/people/{id}")
     public static ResponseEntity<Person> fetchPerson(@RequestHeader("Authorization") String token, @PathVariable int id){

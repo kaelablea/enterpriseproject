@@ -10,10 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import person.models.Audit;
-import person.models.AuditTrail;
-import person.models.Person;
-import person.models.PersonException;
+import person.models.*;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -33,8 +30,30 @@ public class PersonGateway {
         this.wsURL = url;
     }
 
-    public ArrayList<Person> getPeople() {
-        ArrayList<Person> people = new ArrayList<Person>();
+    public Person getPerson(int id){
+        Person person = new Person();
+        try {
+            HttpGet request = new HttpGet(wsURL + "/people/" + String.valueOf(id));
+            request.setHeader("Authorization", sessionId);
+            String response = waitForResponseAsString(request);
+            JSONObject obj = new JSONObject(response);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            person.setId(obj.getInt("id"));
+            person.setFirstName(obj.getString("firstName"));
+            person.setLastName(obj.getString("lastName"));
+            person.setDateOfBirth(LocalDate.parse(obj.getString("dateOfBirth")));
+            Timestamp ts = Timestamp.valueOf(obj.getString("lastModified"));
+            person.setLastModified(ts);
+            return person;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return person;
+    }
+
+    public People getPeople() {
+        People people = new People();
+        ArrayList<Person> ppl = people.getPeople();
 
         try {
             HttpGet request = new HttpGet(wsURL + "/people");
@@ -47,8 +66,88 @@ public class PersonGateway {
             //People pList = new People(pArray.toList());
             for( Object obj : pArray) {
                 JSONObject jsonObject = (JSONObject) obj;
-                people.add(new Person(jsonObject.getInt("id"), jsonObject.getString("firstName"), jsonObject.getString("lastName"), LocalDate.parse(jsonObject.getString("dateOfBirth"))));
+                ppl.add(new Person(jsonObject.getInt("id"), jsonObject.getString("firstName"), jsonObject.getString("lastName"), LocalDate.parse(jsonObject.getString("dateOfBirth"))));
 
+            }
+            people.setPeople(ppl);
+            if(arr.has("totalRecords")){
+                people.setTotalRecords(arr.getInt("totalRecords"));
+            }
+            if(arr.has("pageSize")){
+                people.setPageSize(arr.getInt("pageSize"));
+            }
+            if(arr.has("currentPage")){
+                people.setCurrentPage(arr.getInt("currentPage"));
+            }
+        } catch (Exception e) {
+            throw new PersonException(e);
+        }
+
+        return people;
+    }
+    public People getPeople(int page) {
+        People people = new People();
+        ArrayList<Person> ppl = people.getPeople();
+
+        try {
+            HttpGet request = new HttpGet(wsURL + "/people?pageNum=" + page );
+            // specify Authorization header
+            request.setHeader("Authorization", sessionId);
+
+            String response = waitForResponseAsString(request);
+            JSONObject arr = new JSONObject(response);
+            JSONArray pArray = arr.getJSONArray("people");
+            //People pList = new People(pArray.toList());
+            for( Object obj : pArray) {
+                JSONObject jsonObject = (JSONObject) obj;
+                ppl.add(new Person(jsonObject.getInt("id"), jsonObject.getString("firstName"), jsonObject.getString("lastName"), LocalDate.parse(jsonObject.getString("dateOfBirth"))));
+
+            }
+            people.setPeople(ppl);
+            if(arr.has("totalRecords")){
+                people.setTotalRecords(arr.getInt("totalRecords"));
+            }
+            if(arr.has("pageSize")){
+                people.setPageSize(arr.getInt("pageSize"));
+            }
+            if(arr.has("currentPage")){
+                people.setCurrentPage(arr.getInt("currentPage"));
+            }
+        } catch (Exception e) {
+            throw new PersonException(e);
+        }
+
+        return people;
+    }
+
+    // for searching for people
+    public People getPeople(String lastName, int page) {
+        People people = new People();
+        ArrayList<Person> ppl = new ArrayList<>();
+
+        try {
+            HttpGet request = new HttpGet(wsURL + "/people?pageNum="+String.valueOf(page)+"&lastName="+lastName);
+            // specify Authorization header
+            request.setHeader("Authorization", sessionId);
+
+            String response = waitForResponseAsString(request);
+            JSONObject arr = new JSONObject(response);
+            JSONArray pArray = arr.getJSONArray("people");
+            //People pList = new People(pArray.toList());
+            for( Object obj : pArray) {
+                JSONObject jsonObject = (JSONObject) obj;
+                ppl.add(new Person(jsonObject.getInt("id"), jsonObject.getString("firstName"), jsonObject.getString("lastName"), LocalDate.parse(jsonObject.getString("dateOfBirth"))));
+
+            }
+            people.setPeople(ppl);
+            if(arr.has("totalRecords")){
+                people.setTotalRecords(arr.getInt("totalRecords"));
+            }
+            if(arr.has("pageSize")){
+                people.setPageSize(arr.getInt("pageSize"));
+            }
+            if(arr.has("currentPage")){
+                people.setCurrentPage(arr.getInt("currentPage"));
             }
         } catch (Exception e) {
             throw new PersonException(e);
@@ -102,7 +201,7 @@ public class PersonGateway {
             if (updateValues.containsKey("dateOfBirth")) {
                 person.put("dateOfBirth", updateValues.get("dateOfBirth"));
             }
-
+            person.put("lastModified", updateValues.get("lastModified"));
             String personString = person.toString();
             StringEntity reqEntity = new StringEntity(personString);
             request.setEntity(reqEntity);

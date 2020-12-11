@@ -6,6 +6,7 @@ package person.models;
 
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -17,17 +18,29 @@ public class Person {
     private LocalDate dateOfBirth;
     private int id;
     private int age;
+    private Timestamp lastModified;
 
     public Person(){
+        this.id = 0;
     }
 
-    public Person(int id, String firstName, String lastName, LocalDate dateOfBirth) {
+    public Person(int id, String firstName, String lastName, LocalDate dateOfBirth, Timestamp lastModified) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.id = id;
         this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
+        this.lastModified = lastModified;
 
+        logger.debug("person fetched");
+    }
+
+    public Person(int id, String fName, String lName, LocalDate dob) {
+        this.firstName = fName;
+        this.lastName = lName;
+        this.dateOfBirth = dob;
+        this.id = id;
+        this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
         logger.debug("person constructed");
     }
 
@@ -38,6 +51,7 @@ public class Person {
                 ", firstName='" +firstName + "'" +
                 ", lastName='" + lastName + "'" +
                 ", dateOfBirth='" +dateOfBirth.toString() + "'" +
+                ", lastModified=" + lastModified.toString()+ "'" +
                 "}";
     }
 
@@ -99,6 +113,14 @@ public class Person {
 
     public int getAge() {
         return age;
+    }
+
+    public Timestamp getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Timestamp lastModified) {
+        this.lastModified = lastModified;
     }
 
     public void setAge(int age) {

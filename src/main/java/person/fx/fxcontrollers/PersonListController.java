@@ -5,29 +5,35 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.util.Callback;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import person.models.Person;
 import person.fx.PersonParameters;
 import person.fx.SessionParameters;
 import person.fx.ViewSwitcher;
 import person.fx.ViewType;
 import person.gateway.PersonGateway;
+import person.models.People;
+import person.models.Person;
 
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class PersonListController implements Initializable {
     private static final Logger logger = LogManager.getLogger();
     PersonGateway personGateway;
+    int getPage;
+    int currentPage;
     @FXML
-    private Button addPerson, deletePerson, updatePerson;
+    private Button addPerson, deletePerson, updatePerson, search, firstPage, lastPage, previousPage, nextPage;
+
+    @FXML
+    private Label startRecord, lastRecord, totalRecords;
+
+    @FXML
+    private TextField lastName;
 
     @FXML
     private ListView<Person> personList;
@@ -40,7 +46,7 @@ public class PersonListController implements Initializable {
     @FXML
     void handler(ActionEvent event) {
         if (event.getSource() == addPerson) {
-            PersonParameters.setPersonParm(new Person(0,"","",LocalDate.now()));
+            PersonParameters.setPersonParm(new Person());
             ViewSwitcher.getInstance().switchView(ViewType.PersonDetailView);
         } else if (event.getSource() == deletePerson) {
             if(personList.getSelectionModel().isEmpty() == false) {
@@ -65,7 +71,201 @@ public class PersonListController implements Initializable {
             else{
                 logger.error("No Person Selected To Update");
             }
+
+        } else if(event.getSource()== search){
+            logger.info("Searching for last name: " + lastName.getText() );
+            people.clear();
+            getPage = 1;
+            previousPage.setDisable(true);
+            People ppl =personGateway.getPeople(lastName.getText(), getPage );
+            ArrayList<Person> listOfPeople = ppl.getPeople();
+            logger.info("Retrieved list of people.");
+            for(Person i :  listOfPeople){
+                people.add(i);
+            }
+            personList.getItems().setAll(people);
+            personList.getItems().addAll(people);
+            //personList.setItems(people);
+
+            if(ppl.getTotalRecords() == 0){
+                startRecord.setText(String.valueOf(0));
+                previousPage.setDisable(true);
+                nextPage.setDisable(true);
+                firstPage.setDisable(true);
+                lastPage.setDisable(true);
+            }else {
+                startRecord.setText(String.valueOf(1));
+            }
+            if(ppl.getTotalRecords()<10) {
+                lastRecord.setText(String.valueOf(ppl.getTotalRecords()));
+                nextPage.setDisable(true);
+            }else{
+                lastRecord.setText(String.valueOf(10));
+            }
+            totalRecords.setText(String.valueOf(ppl.getTotalRecords()));
+
+        } else if(event.getSource() == firstPage){
+            people.clear();
+            previousPage.setDisable(true);
+            if(lastName.getText() != null){
+                getPage = 1;
+                People ppl =personGateway.getPeople(lastName.getText(), getPage );
+                ArrayList<Person> listOfPeople = ppl.getPeople();
+                logger.info("Retrieved list of people.");
+                for(Person i :  listOfPeople){
+                    people.add(i);
+                }
+
+                personList.setItems(people);
+
+                startRecord.setText(String.valueOf(1));
+                lastRecord.setText(String.valueOf(10));
+                totalRecords.setText(String.valueOf(ppl.getTotalRecords()));
+            }
+            else{
+                getPage = 1;
+                People ppl=personGateway.getPeople(getPage );
+                ArrayList<Person> listOfPeople = ppl.getPeople();
+
+                logger.info("Retrieved list of people.");
+                for(Person i :  listOfPeople){
+                    people.add(i);
+                }
+
+
+                personList.setItems(people);
+
+                startRecord.setText(String.valueOf(1));
+                lastRecord.setText(String.valueOf(10));
+                totalRecords.setText(String.valueOf(ppl.getTotalRecords()));
+            }
+
+
+
+        } else if(event.getSource() == previousPage){
+            people.clear();
+            currentPage-=1;
+            getPage = currentPage;
+            if(currentPage == 1){
+                previousPage.setDisable(true);
+            }
+            if(currentPage < 9+ Integer.parseInt(totalRecords.getText())/10){
+                nextPage.setDisable(false);
+            }
+            if(lastName.getText() != null){
+                People ppl =personGateway.getPeople(lastName.getText(), getPage );
+                ArrayList<Person> listOfPeople = ppl.getPeople();
+                logger.info("Retrieved list of people.");
+                for(Person i :  listOfPeople){
+                    people.add(i);
+                }
+
+                personList.setItems(people);
+
+                startRecord.setText(String.valueOf((currentPage-1)*10+1));
+                lastRecord.setText(String.valueOf(currentPage*10));
+                totalRecords.setText(String.valueOf(ppl.getTotalRecords()));
+            }
+            else{
+                People ppl=personGateway.getPeople(getPage );
+                ArrayList<Person> listOfPeople = ppl.getPeople();
+                logger.info("Retrieved list of people.");
+                for(Person i :  listOfPeople){
+                    people.add(i);
+                }
+
+                personList.setItems(people);
+
+                startRecord.setText(String.valueOf((currentPage-1)*10+1));
+                lastRecord.setText(String.valueOf(currentPage*10));
+                totalRecords.setText(String.valueOf(ppl.getTotalRecords()));
+            }
+
+
+        } else if (event.getSource() == nextPage){
+            currentPage+= 1;
+            getPage = currentPage;
+            people.clear();
+            previousPage.setDisable(false);
+            int lPage=0;
+            if(currentPage == 9+ Integer.parseInt(totalRecords.getText())/10){
+                nextPage.setDisable(true);
+                lPage =currentPage;
+            }
+            if(lastName.getText() != null){
+                People ppl =personGateway.getPeople(lastName.getText(), getPage );
+                ArrayList<Person> listOfPeople = ppl.getPeople();
+                logger.info("Retrieved list of people.");
+                for(Person i :  listOfPeople){
+                    people.add(i);
+                }
+
+                personList.setItems(people);
+
+                startRecord.setText(String.valueOf((currentPage-1)*10+1));
+                if(lPage >0){
+                    lastRecord.setText(String.valueOf(ppl.getTotalRecords()));
+                }else {
+                    lastRecord.setText(String.valueOf(currentPage * 10));
+                }
+                totalRecords.setText(String.valueOf(ppl.getTotalRecords()));
+            }
+            else{
+                People ppl=personGateway.getPeople(getPage );
+                ArrayList<Person> listOfPeople = ppl.getPeople();
+                logger.info("Retrieved list of people.");
+                for(Person i :  listOfPeople){
+                    people.add(i);
+                }
+
+                personList.setItems(people);
+
+                startRecord.setText(String.valueOf((currentPage-1)*10+1));
+                if(lPage >0){
+                    lastRecord.setText(String.valueOf(ppl.getTotalRecords()));
+                }else {
+                    lastRecord.setText(String.valueOf(currentPage * 10));
+                }
+                totalRecords.setText(String.valueOf(ppl.getTotalRecords()));
+            }
+
+        } else if (event.getSource() == lastPage){
+            people.clear();
+            currentPage = (9+ Integer.parseInt(totalRecords.getText()))/10;
+            getPage = currentPage;
+            nextPage.setDisable(true);
+            if(lastName.getText() != null){
+                People ppl =personGateway.getPeople(lastName.getText(), getPage );
+                ArrayList<Person> listOfPeople = ppl.getPeople();
+                logger.info("Retrieved list of people.");
+                for(Person i :  listOfPeople){
+                    people.add(i);
+                }
+
+                personList.setItems(people);
+
+                startRecord.setText(String.valueOf((currentPage-1)*10+1));
+                lastRecord.setText(String.valueOf(ppl.getTotalRecords()));
+                totalRecords.setText(String.valueOf(ppl.getTotalRecords()));
+            }
+            else{
+                People ppl=personGateway.getPeople(getPage );
+                ArrayList<Person> listOfPeople = ppl.getPeople();
+
+                logger.info("Retrieved list of people.");
+                for(Person i :  listOfPeople){
+                    people.add(i);
+                }
+
+                personList.setItems(people);
+
+                startRecord.setText(String.valueOf((currentPage-1)*10+1));
+                lastRecord.setText(String.valueOf(ppl.getTotalRecords()));
+                totalRecords.setText(String.valueOf(ppl.getTotalRecords()));
+            }
+
         }
+        personList.refresh();
 
     }
 
@@ -75,7 +275,13 @@ public class PersonListController implements Initializable {
         //Should I put PersonGateway in personParam?
         //Would be cleaner(?) and still could make more than one if necessary
         personGateway = new PersonGateway("http://localhost:8080", SessionParameters.getSessionToken());
-        ArrayList<Person> listOfPeople = personGateway.getPeople();
+        getPage =1;
+        currentPage =1;
+        lastName.setText(null);
+        previousPage.setDisable(true);
+
+        People ppl = personGateway.getPeople();
+        ArrayList<Person> listOfPeople = ppl.getPeople();
         logger.info("Retrieved list of people.");
         for(Person i :  listOfPeople){
             people.add(i);
@@ -99,6 +305,10 @@ public class PersonListController implements Initializable {
             }
         });
         logger.info(personList.toString());
+        startRecord.setText(String.valueOf(1));
+        lastRecord.setText(String.valueOf(10));
+        totalRecords.setText(String.valueOf(ppl.getTotalRecords()));
+
     }
 
 }

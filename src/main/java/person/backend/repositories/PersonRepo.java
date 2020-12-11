@@ -33,10 +33,13 @@ public class PersonRepo {
             st = connection.prepareStatement("SELECT * FROM `Person` WHERE `id`=?");
             st.setInt(1, id);
             rs = st.executeQuery();
+            rs.first();
             person.setId(id);
             person.setFirstName(rs.getString("first_name"));
             person.setLastName(rs.getString("last_name"));
             person.setDateOfBirth(rs.getDate("dob").toLocalDate());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            person.setLastModified(rs.getTimestamp("last_modified"));
             st.close();
             return person;
         } catch (SQLException throwables) {
@@ -45,13 +48,22 @@ public class PersonRepo {
         }
     }
 
+    //This is the initial fetch people, gets the first 10 person records
     public People fetchPeople(){
         PreparedStatement st = null;
         ResultSet rs = null;
         People people = new People();
         ArrayList<Person> list = people.getPeople();
+        int numOfPeople = 0;
         try{
             st = connection.prepareStatement("SELECT * FROM `Person` WHERE 1");
+            rs = st.executeQuery();
+            rs.last();
+            numOfPeople = rs.getRow();
+            people.setTotalRecords(numOfPeople);
+            st = connection.prepareStatement("SELECT * FROM `Person` WHERE 1 LIMIT ?, ?");
+            st.setInt(1, 0);
+            st.setInt(2, 10);
             rs = st.executeQuery();
 
                 while (rs.next()) {
@@ -63,7 +75,109 @@ public class PersonRepo {
                     Person nextPerson = new Person(id, fName, lName, dob);
                     list.add(nextPerson);
                 }
+            people.setPageSize(10);
+            people.setCurrentPage(1);
+            people.setPeople(list);
 
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            return people;
+        }
+    }
+
+    //This is getting the page specified of all person records
+    public People fetchPeople(int page){
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        People people = new People();
+        ArrayList<Person> list = people.getPeople();
+        int numOfPeople =0;
+        try {
+            st = connection.prepareStatement("SELECT * FROM `Person` WHERE 1");
+            rs = st.executeQuery();
+            rs.last();
+            numOfPeople = rs.getRow();
+            people.setTotalRecords(numOfPeople);
+
+            st = connection.prepareStatement("SELECT * FROM `Person` WHERE 1 LIMIT ?,?");
+            if (page > 1){
+                st.setInt(1, (page - 1) * 10+1);
+            }
+            else{
+                st.setInt(1, 0);
+            }
+            st.setInt(2, 10);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                String fName = rs.getString("first_name");
+                logger.info("Person name: " + fName);
+                String lName = rs.getString("last_name");
+                LocalDate dob = rs.getDate("dob").toLocalDate();
+                int id = rs.getInt("id");
+                Person nextPerson = new Person(id, fName, lName, dob);
+                list.add(nextPerson);
+            }
+            people.setPageSize(10);
+            people.setCurrentPage(page);
+            people.setPeople(list);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            try {
+                st.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            return people;
+        }
+    }
+
+    //this is getting the page of all records that have lastname starting with lastName
+    public People fetchPeople(int page, String lastName){
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        People people = new People();
+        ArrayList<Person> list = people.getPeople();
+        int numOfPeople = 0;
+        try{
+            st = connection.prepareStatement("SELECT * FROM `Person` WHERE `last_name` LIKE ?");
+            st.setString(1,lastName+"%");
+            rs = st.executeQuery();
+            rs.last();
+            numOfPeople = rs.getRow();
+            people.setTotalRecords(numOfPeople);
+
+            st = connection.prepareStatement("SELECT * FROM `Person` WHERE `last_name` LIKE ? LIMIT ?, ?");
+            st.setString(1,lastName+"%");
+            if(page> 1) {
+                st.setInt(2,(page-1) * 10 +1);
+            }
+            else{
+                st.setInt(2, 0);
+            }
+            st.setInt(3, 10);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                String fName = rs.getString("first_name");
+                logger.info("LName Person name: " + fName);
+                String lName = rs.getString("last_name");
+                LocalDate dob = rs.getDate("dob").toLocalDate();
+                int id = rs.getInt("id");
+                Person nextPerson = new Person(id, fName, lName, dob);
+                list.add(nextPerson);
+            }
+
+            people.setPageSize(10);
+            people.setCurrentPage(page);
             people.setPeople(list);
 
         } catch (SQLException throwables) {

@@ -99,6 +99,7 @@ public class PersonDetailController implements Initializable {
             logger.info("CREATING " + person.getFirstName() + " " + person.getLastName());
 
         }
+        //UPDATE PERSON
         else{
             Map<String,String> changedValues = new HashMap<String,String>();
 
@@ -140,7 +141,13 @@ public class PersonDetailController implements Initializable {
             person.setFirstName(firstName.getText());
             person.setLastName(lastName.getText());
             person.setDateOfBirth(dob.getValue());
-            personGateway.updatePerson(changedValues, person.getId());
+            changedValues.put("lastModified", person.getLastModified().toString());
+            String response = personGateway.updatePerson(changedValues, person.getId());
+            if(response.contains("Non-200 status code returned:" )){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "This person has been modified by someone else!");
+                alert.showAndWait();
+                throw new PersonException("Optimistic locking.");
+            }
             logger.info("UPDATING " + person.getFirstName() + " " + person.getLastName());
         }
         ViewSwitcher.getInstance().switchView(ViewType.PersonListView);
@@ -160,6 +167,7 @@ public class PersonDetailController implements Initializable {
             auditTable.getColumns().addAll(chngMsg, chngBy, when);
             auditTable.setPlaceholder(new Label("No audits to display."));
         } else{
+            person = personGateway.getPerson(person.getId());
             ObservableList<Audit> data = FXCollections.observableArrayList();
             AuditTrail auditTrail = personGateway.getAuditTrail(person.getId());
             for(Audit a : auditTrail.getAudits()){
