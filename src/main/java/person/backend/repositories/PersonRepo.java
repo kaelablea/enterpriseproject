@@ -39,7 +39,8 @@ public class PersonRepo {
             person.setLastName(rs.getString("last_name"));
             person.setDateOfBirth(rs.getDate("dob").toLocalDate());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            person.setLastModified(rs.getTimestamp("last_modified"));
+            Timestamp ts = rs.getTimestamp("last_modified");
+            person.setLastModified(ts);
             st.close();
             return person;
         } catch (SQLException throwables) {

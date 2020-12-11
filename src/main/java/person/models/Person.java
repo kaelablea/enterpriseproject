@@ -4,8 +4,10 @@ package person.models;
  * Created by Mikaela on 9/8/2020.
  */
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.Period;
@@ -18,7 +20,8 @@ public class Person {
     private LocalDate dateOfBirth;
     private int id;
     private int age;
-    private Timestamp lastModified;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    Date lastModified;
 
     public Person(){
         this.id = 0;
@@ -116,7 +119,7 @@ public class Person {
     }
 
     public Timestamp getLastModified() {
-        return lastModified;
+        return (Timestamp) lastModified;
     }
 
     public void setLastModified(Timestamp lastModified) {
