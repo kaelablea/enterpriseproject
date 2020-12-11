@@ -145,7 +145,24 @@ public class PersonDetailController implements Initializable {
             try{
                 personGateway.updatePerson(changedValues, person.getId());
             } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "This person has been modified by someone else!");
+                person = personGateway.getPerson(person.getId());
+                firstName.setText(person.getFirstName());
+                lastName.setText(person.getLastName());
+                dob.setValue(person.getDateOfBirth());
+                ObservableList<Audit> data = FXCollections.observableArrayList();
+                AuditTrail auditTrail = personGateway.getAuditTrail(person.getId());
+                TableColumn<Audit, String> chngMsg = new TableColumn<>("Change");
+                TableColumn<Audit, String> chngBy= new TableColumn<>("Changed By");
+                TableColumn<Audit, String> when = new TableColumn<>("When Occurred");
+                for(Audit a : auditTrail.getAudits()){
+                    data.add(a);
+                }
+                chngMsg.setCellValueFactory(new PropertyValueFactory<>("changeMsg"));
+                chngBy.setCellValueFactory(new PropertyValueFactory<>("changedBy"));
+                when.setCellValueFactory(new PropertyValueFactory<>("whenOccurred"));
+                auditTable.setItems(data);
+                auditTable.getColumns().setAll(chngMsg, chngBy, when);
+                Alert alert = new Alert(Alert.AlertType.ERROR, "This person has been modified by someone else! Try again.");
                 alert.showAndWait();
                 throw new PersonException("Optimistic locking.");
             }
